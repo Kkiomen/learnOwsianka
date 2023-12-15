@@ -5967,16 +5967,16 @@
         },
         {
             "name": "laravel/breeze",
-            "version": "v1.26.1",
+            "version": "v1.26.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/breeze.git",
-                "reference": "8757692a7be1a6174a0f1a5d3c280a8912d45dd0"
+                "reference": "a09d3664b5154377e2b0ebdf54fcae3d331e176d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/breeze/zipball/8757692a7be1a6174a0f1a5d3c280a8912d45dd0",
-                "reference": "8757692a7be1a6174a0f1a5d3c280a8912d45dd0",
+                "url": "https://api.github.com/repos/laravel/breeze/zipball/a09d3664b5154377e2b0ebdf54fcae3d331e176d",
+                "reference": "a09d3664b5154377e2b0ebdf54fcae3d331e176d",
                 "shasum": ""
             },
             "require": {
@@ -6025,7 +6025,7 @@
                 "issues": "https://github.com/laravel/breeze/issues",
                 "source": "https://github.com/laravel/breeze"
             },
-            "time": "2023-11-01T14:18:45+00:00"
+            "time": "2023-12-06T18:27:17+00:00"
         },
         {
             "name": "laravel/pint",
