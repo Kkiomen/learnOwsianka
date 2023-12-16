@@ -13,6 +13,12 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.global.min.js'></script>
+        <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.10/index.global.min.js"></script>
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -32,5 +38,72 @@
                 {{ $slot }}
             </main>
         </div>
+        <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
+        <script src="//unpkg.com/alpinejs" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/moment@2/min/moment.min.js"></script>
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    plugins: [timeGridPlugin, interactionPlugin ],
+                    initialView: 'dayGridMonth, timeGridWeek',
+                    selectable: true,
+                    headerToolbar: {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'timeGridWeek,timeGridDay' // user can switch between the two
+                    },
+                    events: [
+                        {
+                            id: 'a',
+                            title: 'my event',
+                            start: '2023-12-16'
+                        }
+                    ],
+                    eventClick: function(eventObj) {
+                        if (eventObj.url) {
+                            alert(
+                                'Clicked ' + eventObj.title + '.\n' +
+                                'Will open ' + eventObj.url + ' in a new tab'
+                            );
+
+                            window.open(eventObj.url);
+
+                            return false; // prevents browser from following link in current tab.
+                        } else {
+                            alert('Clicked ' + eventObj.title);
+                        }
+                    },
+                });
+                calendar.render();
+            });
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    timeZone: 'UTC',
+                    initialView: 'timeGridWeek',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'timeGridWeek,timeGridDay'
+                    },
+                    events: [
+                        {
+                            id: 'a',
+                            title: 'my event',
+                            start: '2023-12-16'
+                        }
+                    ]
+                });
+
+                calendar.render();
+            });
+
+        </script>
     </body>
 </html>

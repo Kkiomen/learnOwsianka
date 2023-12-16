@@ -15,13 +15,34 @@
 {{--    </div>--}}
 {{--    <!-- end search input -->--}}
 {{--</div>--}}
-<div class="header-language dropdown d-lg-inline-block">
-    <a href="javascript:void(0);"><i class="fa-solid fa-language"></i></a>
-    <ul class="dropdown-menu alt-font">
-        <li><a href="javascript:void(0);" title="France"><span class="icon-country"><img src="{{ asset('images/country-flag-16X16/Poland.png') }}" alt=""></span>Poland</a></li>
-        <li><a href="javascript:void(0);" title="English"><span class="icon-country"><img src="{{ asset('images/country-flag-16X16/usa.png') }}" alt=""></span>English</a></li>
-    </ul>
-</div>
+
+
+
+
+
+
+
+
+
+{{--<div class="header-language dropdown d-lg-inline-block">--}}
+{{--    <a href="javascript:void(0);"><i class="fa-solid fa-language"></i></a>--}}
+{{--    <ul class="dropdown-menu alt-font">--}}
+{{--        <li><a href="javascript:void(0);" title="France"><span class="icon-country"><img src="{{ asset('images/country-flag-16X16/Poland.png') }}" alt=""></span>Poland</a></li>--}}
+{{--        <li><a href="javascript:void(0);" title="English"><span class="icon-country"><img src="{{ asset('images/country-flag-16X16/usa.png') }}" alt=""></span>English</a></li>--}}
+{{--    </ul>--}}
+{{--</div>--}}
+
+
+
+
+
+
+
+
+
+
+
+
 {{--<div class="header-cart-icon dropdown">--}}
 {{--    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font bg-fast-blue text-white">2</span></a>--}}
 {{--    <ul class="dropdown-menu cart-item-list">--}}

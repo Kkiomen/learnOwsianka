@@ -16,7 +16,7 @@ class HomeController extends Controller
 
     public function blog()
     {
-        $posts = Blog::orderBy('created_at','desc')->where('language', env('LANGUAGE'))->paginate(15);
+        $posts = Blog::orderBy('created_at','desc')->where('language', env('LANGUAGE'))->where('activated', true)->paginate(15);
         return view('pages.blog', [
             'posts' => $posts,
         ]);
@@ -24,7 +24,7 @@ class HomeController extends Controller
 
     public function blogPost($slug)
     {
-        $post = Blog::where('slug', $slug)->where('language', env('LANGUAGE'))->first();
+        $post = Blog::where('slug', $slug)->where('language', env('LANGUAGE'))->where('activated', true)->first();
 
         if(!$post){
             abort(404);

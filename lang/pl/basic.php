@@ -6,5 +6,6 @@ return [
     'blog_header' => 'Świat kodu',
     'blog_subheader' => 'Rozwijaj umiejętności z każdym kliknięciem',
     'index_main' => 'Chcesz poznać więcej ciekawostek?',
-    'index_submain' => 'Programowanie to pasja, która wymaga ciągłego rozwoju. Skorzystaj z treści, które dla Ciebie przygotowałem.'
+    'index_submain' => 'Programowanie to pasja, która wymaga ciągłego rozwoju. Skorzystaj z treści, które dla Ciebie przygotowałem.',
+    'calendar' => 'Kalendarz',
 ];

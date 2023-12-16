@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('social_post_id')->unsigned()->nullable();
             $table->text('slug');
             $table->text('title');
             $table->text('short_description');
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->text('content');
             $table->text('tags');
             $table->text('image_url');
+            $table->boolean('activated')->default(false);
             $table->timestamps();
         });
     }
