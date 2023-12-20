@@ -3,6 +3,12 @@
 
 
 @section('blog-items')
+    @if($posts->count() === 0)
+
+        Brak postów
+
+    @endif
+
     @foreach($posts as $post)
         <li class="grid-item wow animate__fadeIn">
             <div class="blog-post border-radius-5px bg-white">
@@ -12,8 +18,9 @@
 {{--                    <a href="blog-post-layout-01.html" class="blog-comment text-extra-small"><i class="far fa-comment"></i><span>52</span></a>--}}
 {{--                </div>--}}
                 <div class="blog-post-image">
-                    <a href="{{ route('blogPost', ['slug' => $post->slug]) }}" title=""><img src="{{ $post->image_url }}" alt="{{ $post->title }}"></a>
-{{--                    <div class="alt-font blog-category"><a href="blog-grid.html" class="text-uppercase text-fast-blue">Fashion</a></div>--}}
+                    @if($post->image_url !== null)
+                        <a href="{{ route('blogPost', ['slug' => $post->slug]) }}" title=""><img src="{{ $post->image_url }}" alt="{{ $post->title }}"></a>
+                    @endif
                 </div>
                 <div class="post-details padding-3-rem-lr padding-2-half-rem-tb lg-padding-2-rem-all md-padding-2-half-rem-tb md-padding-3-rem-lr">
                     <a href="{{ route('blogPost', ['slug' => $post->slug]) }}" class="alt-font font-weight-500 text-extra-medium text-extra-dark-gray d-block margin-15px-bottom">{{ $post->title }}</a>

@@ -40,9 +40,11 @@
                                 <td>{{ $social->title }}</td>
                                 <td>{{ $social->date_post }}</td>
                                 <td>
-                                    <x-bladewind.button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                        <a href="{{ route('socialPost.view', ['id' => $social->id]) }}">View</a>
-                                    </x-bladewind.button>
+                                    <a href="{{ route('socialPost.view', ['id' => $social->id]) }}">
+                                        <x-bladewind.button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                            View
+                                        </x-bladewind.button>
+                                    </a>
                                     <x-bladewind.button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mt-2 rounded">
                                         <a href="{{ route('socialPost.remove', ['id' => $social->id]) }}" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                                     </x-bladewind.button>

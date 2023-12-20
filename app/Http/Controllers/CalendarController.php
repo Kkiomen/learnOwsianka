@@ -18,7 +18,22 @@ class CalendarController extends Controller
     }
     public function saveEvent(Request $request)
     {
-//        dd($request->all());
+        $blog = Blog::where('id', $request->get('id'))->first();
+
+        if(!$blog) {
+            return Redirect::back();
+        }
+
+        $blog->update([
+            'title' => $request->get('title'),
+            'slug' => $request->get('slug'),
+            'content' => $request->get('content'),
+            'short_description' => $request->get('short_description'),
+            'image_url' => $request->get('image_url'),
+            'language' => $request->get('language'),
+            'tags' => $request->get('tags'),
+            'activated' => $request->exists('checkbox') ? true : false
+        ]);
         /**
          * "title" => "aaaa"
          * "tags" => "bbbbb"
@@ -28,15 +43,15 @@ class CalendarController extends Controller
          * "short_description" => "fffff"
          * "content" => "gggg"
          */
-        Blog::create([
-            'title' => $request->get('title'),
-            'slug' => $request->get('slug'),
-            'content' => $request->get('content'),
-            'short_description' => $request->get('short_description'),
-            'image_url' => $request->get('image_url'),
-            'language' => $request->get('language'),
-            'tags' => $request->get('tags'),
-        ]);
+//        Blog::create([
+//            'title' => $request->get('title'),
+//            'slug' => $request->get('slug'),
+//            'content' => $request->get('content'),
+//            'short_description' => $request->get('short_description'),
+//            'image_url' => $request->get('image_url'),
+//            'language' => $request->get('language'),
+//            'tags' => $request->get('tags'),
+//        ]);
 
         return Redirect::back();
     }
