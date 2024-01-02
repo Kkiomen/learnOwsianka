@@ -146,7 +146,7 @@ class SocialPostController extends Controller
             $fileName = $file->getClientOriginalName();
 
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('uploads', $filename, 'public');
+            $file->storeAs('image-uploads', $fileName, 'public');
 
             $contentToUpdate->update([
                 'image_url' => $filename,

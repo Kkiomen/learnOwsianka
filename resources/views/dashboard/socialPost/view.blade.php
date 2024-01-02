@@ -262,7 +262,7 @@
 
                                                     @if($content->image_url !== null)
                                                         <img
-                                                            src="{{ asset('storage/uploads/'. $content->image_url) }}"/>
+                                                            src="{{ asset('storage/image-uploads/'. $content->image_url) }}"/>
                                                     @endif
                                                     <div class="col-span-full">
                                                         <div
@@ -415,7 +415,7 @@
                         <div
                             class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                             @if($post->image !== null)
-                                <img src="{{ asset('storage/uploads/'. $post->image) }}" class="h-full w-full object-cover object-center group-hover:opacity-75"/>
+                                <img src="{{ asset('storage/image-uploads/'. $post->image) }}" class="h-full w-full object-cover object-center group-hover:opacity-75"/>
                             @endif
                         </div>
                         <p class="mt-4 text-sm text-gray-700">{{ $post->text }}</p>

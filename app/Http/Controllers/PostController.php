@@ -162,7 +162,7 @@ class PostController extends Controller
 
         foreach ($posts as $post) {
             $payload[$post->social_type][$post->language] = [
-                'image' => 'https://i.imgur.com/PGlploS.png' ?? asset('storage/uploads/' . $post->social_type . '/' . $post->image),
+                'image' =>  asset('storage/image-uploads/' . $post->image),
                 'language' => $post->language,
                 'content' => $post->text
             ];
