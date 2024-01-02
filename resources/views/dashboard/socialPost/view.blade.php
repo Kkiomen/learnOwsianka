@@ -25,26 +25,18 @@
                     <div class="flex gap-10">
                         <div class="mx-1">
                             <a href="{{ route('socialPost.generateArticle', ['id' => $socialPost->id, 'language' => 'pl']) }}">
-                                <x-bladewind.button has_spinner="true"
-                                                    can_submit="false"
-                                                    color="black"
-                                                    name="save-user"
-                                                    class="mx-auto block"
-                                                    onclick="unhide('.save-user .bw-spinner')">Generate - Polish
-                                    language
-                                </x-bladewind.button>
+                                <button type="button"
+                                        class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                    Generate - Polish language
+                                </button>
                             </a>
                         </div>
                         <div class="mx-1">
                             <a href="{{ route('socialPost.generateArticle', ['id' => $socialPost->id, 'language' => 'en']) }}">
-                                <x-bladewind.button has_spinner="true"
-                                                    can_submit="false"
-                                                    color="black"
-                                                    name="save-user"
-                                                    class="mx-auto block"
-                                                    onclick="unhide('.save-user .bw-spinner')">Generate - English
-                                    Language
-                                </x-bladewind.button>
+                                <button type="button"
+                                        class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                    Generate - English language
+                                </button>
                             </a>
                         </div>
                     </div>
@@ -65,44 +57,78 @@
                         <form method="POST" action="{{ route('saveEvent') }}">
                             @csrf
                             <input type="hidden" name="id" value="{{ $blog->id }}">
-                            <x-bladewind.input label="Title" name="title" value="{{ $blog->title }}"/>
-                            <x-bladewind.input label="Tags" name="tags" value="{{ $blog->tags }}"/>
-                            <x-bladewind.input label="Slug" name="slug" value="{{ $blog->slug }}"/>
-                            <x-bladewind.input label="Language" name="language" value="{{ $blog->language }}"/>
-                            <x-bladewind.input label="Image url" name="image_url" value="{{ $blog->image_url }}"/>
-                            <x-bladewind.input label="Short description" name="short_description"
-                                               value="{{ $blog->short_description }}"/>
-                            <x-bladewind.checkbox
-                                label="Activated"
-                                checked="{{ $blog->activated == 0 ? 'false' : 'true' }}"/>
 
-
-                            <div class="flex gap-5">
-                                <x-bladewind.button has_spinner="true"
-                                                    can_submit="true"
-                                                    name="save-user"
-                                                    class="mx-auto block">Save
-                                </x-bladewind.button>
-
-                                <a href="{{ route('blogPost', ['slug' => $blog->slug]) }}" target="_blank">
-                                    <x-bladewind.button
-                                        can_submit="false"
-                                        color="black"
-                                        class="mx-auto block"
-                                    >View
-                                    </x-bladewind.button>
-                                </a>
-                                <a href="{{ route('socialPost.deleteBlog', ['id' => $blog->id]) }}"
-                                   onclick="return confirm('Are you sure you want to delete this item?');">
-                                    <x-bladewind.button
-                                        can_submit="false"
-                                        color="red"
-                                        class="mx-auto block">Delete
-                                    </x-bladewind.button>
-                                </a>
-
-
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Title</label>
+                                <div class="mt-2">
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title" placeholder="Title" value="{{ $blog->title }}"  />
+                                </div>
                             </div>
+
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
+                                <div class="mt-2">
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tags" type="text" name="tags" placeholder="architecture, backend, php" value="{{ $blog->tags }}"  />
+                                </div>
+                            </div>
+
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Slug</label>
+                                <div class="mt-2">
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="slug" id="slug" value="{{ $blog->slug }}"  />
+                                </div>
+                            </div>
+
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Language</label>
+                                <div class="mt-2">
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="language" id="language" value="{{ $blog->language }}"  />
+                                </div>
+                            </div>
+
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Image url</label>
+                                <div class="mt-2">
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="image_url" id="image_url" value="{{ $blog->image_url }}"  />
+                                </div>
+                            </div>
+
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Short description</label>
+                                <div class="mt-2">
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="short_description" id="short_description" value="{{ $blog->short_description }}"  />
+                                </div>
+                            </div>
+
+                           <div class="flex mt-4">
+                               <x-bladewind.checkbox
+                                   label="Activated"
+                                   checked="{{ $blog->activated == 0 ? 'false' : 'true' }}"/>
+
+
+                               <div class="flex justify-between gap-5">
+                                   <button type="submit"
+                                           class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                       <i class="fa-regular fa-floppy-disk mr-2"></i>
+                                       Save
+                                   </button>
+
+                                   <a href="{{ route('blogPost', ['slug' => $blog->slug]) }}" target="_blank">
+                                       <button type="button"
+                                               class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                                           <i class="fa-solid fa-eye mr-2"></i>
+                                           View
+                                       </button>
+                                   </a>
+                                   <a href="{{ route('socialPost.deleteBlog', ['id' => $blog->id]) }}" onclick="return confirm('Are you sure you want to delete this item?');">
+                                       <button type="button"
+                                               class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                           <i class="fa-regular fa-trash-can mr-2"></i>
+                                           Delete
+                                       </button>
+                                   </a>
+                               </div>
+                           </div>
                         </form>
                         <div class="border border-1 border-gray-500 rounded p-5 my-4">
                             <h3 class="text-sm leading-7 text-gray-900 sm:truncate sm:text-sm sm:tracking-tight">
