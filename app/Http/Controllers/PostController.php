@@ -118,7 +118,7 @@ class PostController extends Controller
         if ($request->hasFile('file-upload')) {
             $file = $request->file('file-upload');
             $fileName = rand(1, 9999999) . $file->getClientOriginalName();
-            $file->storeAs('/', $fileName, 'uploads');
+            $file->storeAs('image/', $fileName, 'public');
 
             foreach (Post::where('social_post_id', $socialPost->id)->where('language', $language)->get() as $post) {
                 $post->image = $fileName;
@@ -136,7 +136,7 @@ class PostController extends Controller
         if ($request->hasFile('file-uploade')) {
             $file = $request->file('file-uploade');
             $fileName = rand(1, 9999999) . $file->getClientOriginalName();
-            $file->storeAs('/', $fileName, 'uploads');
+            $file->storeAs('image/', $fileName, 'public');
 
             foreach (Post::where('social_post_id', $socialPost->id)->where('language', $language)->get() as $post) {
                 $post->image = $fileName;
