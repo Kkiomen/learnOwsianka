@@ -12,7 +12,7 @@
                     <form method="POST" action="{{ route('socialPost.add') }}">
                     @csrf
                         <x-bladewind.input label="Title post" name="title" />
-                        <x-bladewind.datepicker required="true" label="Publication date" name="date" />
+                        <x-bladewind.datepicker required="true" label="Publication date (2024-01-11)" name="date" placeholder="2024-01-11" />
                         <x-bladewind.button has_spinner="true"
                                             can_submit="true"
                                             name="save-user"

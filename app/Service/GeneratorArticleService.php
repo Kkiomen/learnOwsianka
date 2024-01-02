@@ -74,6 +74,8 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
     public function generate(int $socialPostId, string $language): void
     {
+        set_time_limit(900);
+
         $socialPost = SocialPost::where('id', $socialPostId)->first();
         $languageToPrompt = ($language == 'pl') ? 'polskim' : 'angielskim';
 
@@ -113,6 +115,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
     public function generateContentForArticle(int $blogId, string $language): void
     {
+        set_time_limit(900);
         $blog = Blog::where('id', $blogId)->first();
 
         $language = ($language == 'pl') ? 'polskim' : 'angielskim';
@@ -154,7 +157,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
     public function generateContentForBlog(int $contentId)
     {
-
+        set_time_limit(900);
         $contentToGenerate = BlogContent::where('id', $contentId)->first();
         $blog = Blog::where('id', $contentToGenerate->blog_id)->first();
 
