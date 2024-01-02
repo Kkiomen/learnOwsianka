@@ -122,7 +122,7 @@ class PostController extends Controller
 
                 $image = new ImageResize($file->getRealPath());
                 $image->resizeToBestFit($sizes[$post->social_type]['width'], $sizes[$post->social_type]['height']);
-                $image->save(storage_path('app\public\uploads\\' . $post->social_type . '\\' . $fileName));
+                $image->save(storage_path('app/public/uploads/' . $post->social_type . '/' . $fileName));
 
                 $post->image = $fileName;
                 $post->save();
@@ -130,7 +130,7 @@ class PostController extends Controller
 
             $image = new ImageResize($file->getRealPath());
             $image->resizeToBestFit($sizes['article']['width'], $sizes['article']['height']);
-            $image->save(storage_path('app\public\uploads\\' . 'article' . '\\' . $fileName));
+            $image->save(storage_path('app/public/uploads/' . 'article' . '/' . $fileName));
 
             $blogs = Blog::where('social_post_id', $socialPost->id)->where('language', $language)->get();
             foreach ($blogs as $blog) {
