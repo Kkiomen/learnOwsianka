@@ -121,6 +121,8 @@ class PostController extends Controller
             foreach (Post::where('social_post_id', $socialPost->id)->where('language', $language)->get() as $post) {
 
                 $image = new ImageResize($file->getRealPath());
+                $image->quality_jpg = 100;
+                $image->quality_png = 100;
                 $image->resizeToBestFit($sizes[$post->social_type]['width'], $sizes[$post->social_type]['height']);
                 $image->save(storage_path('app/public/uploads/' . $post->social_type . '/' . $fileName));
 
@@ -147,6 +149,8 @@ class PostController extends Controller
             foreach (Post::where('social_post_id', $socialPost->id)->where('language', $language)->get() as $post) {
 
                 $image = new ImageResize($file->getRealPath());
+                $image->quality_jpg = 100;
+                $image->quality_png = 100;
                 $image->resizeToBestFit($sizes[$post->social_type]['width'], $sizes[$post->social_type]['height']);
                 $image->save(storage_path('app\public\uploads\\' . $post->social_type . '\\' . $fileName));
 
