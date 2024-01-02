@@ -9,7 +9,7 @@
         @if($content->type === 'text')
             {!! $content->content !!}
         @elseif($content->type === 'image')
-            <img src="{{ asset('storage/image-uploads/'. $content->image_url) }}"  alt="{{ $content->image_alt }}" class="rounded"/>
+            <img src="{{ \App\Helper\ImageHelper::getImage($content->image_url) }}"  alt="{{ $content->image_alt }}" class="rounded"/>
         @endif
     @endforeach
 @endsection
@@ -36,7 +36,7 @@
 
                 @if($post->image_url !== null)
                     <div class="col-12 col-lg-6 px-0 order-1 align-self-end md-margin-60px-bottom">
-                        <img class="overlap-image border-radius-8px md-no-margin-bottom" src="{{ asset('storage/image-uploads/'. $post->image_url) }}" alt="{{ $post->title }}" />
+                        <img class="overlap-image border-radius-8px md-no-margin-bottom" src="{{ \App\Helper\ImageHelper::getImage($post->image_url) }}" alt="{{ $post->title }}" />
                     </div>
                 @endif
                 <div class="col-12 col-lg-6 padding-9-rem-left overflow-hidden alt-font font-weight-600 text-white text-overlap-style-01 d-none d-md-block">Blog</div>

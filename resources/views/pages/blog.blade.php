@@ -19,7 +19,7 @@
 {{--                </div>--}}
                 <div class="blog-post-image">
                     @if($post->image_url !== null)
-                        <a href="{{ route('blogPost', ['slug' => $post->slug]) }}" title=""><img src="{{ asset('storage/image-uploads/'. $post->image_url) }}" alt="{{ $post->title }}"></a>
+                        <a href="{{ route('blogPost', ['slug' => $post->slug]) }}" title=""><img src="{{ \App\Helper\ImageHelper::getImage($post->image_url) }}" alt="{{ $post->title }}"></a>
                     @endif
                 </div>
                 <div class="post-details padding-3-rem-lr padding-2-half-rem-tb lg-padding-2-rem-all md-padding-2-half-rem-tb md-padding-3-rem-lr">
