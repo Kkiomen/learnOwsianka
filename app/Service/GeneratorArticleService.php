@@ -187,6 +187,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
     public function generateDecorationContentForBlog(int $contentId)
     {
+        set_time_limit(900);
         $contentToGenerate = BlogContent::where('id', $contentId)->first();
 
         $generatedContent = $this->openAiLanguageModel->generate(
@@ -224,6 +225,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
     public function generatePostToSocialMediaByBlogArticle(Blog $article, SocialType $socialType): string
     {
+        set_time_limit(900);
         $postLanguage = $article->language == 'pl' ? 'polskim' : 'angielskim';
         $systemPrompt = 'Stwórz treść posta na Facebooka.
                         Na początku przedstaw temat w taki sposób aby troche wytłumaczyć temat ale i żeby zachęcić do późniejszego przeczytania artykułu
