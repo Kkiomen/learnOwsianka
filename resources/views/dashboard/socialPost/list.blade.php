@@ -21,10 +21,9 @@
                         <div class="col-span-full">
                             <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Publication date</label>
                             <div class="mt-2">
-                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title" placeholder="2024-01-11" value="{{ $blog->title }}"  />
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date" type="text" name="date" placeholder="2024-01-11"/>
                             </div>
                         </div>
-
                         <x-bladewind.button has_spinner="true"
                                             can_submit="true"
                                             name="save-user"
