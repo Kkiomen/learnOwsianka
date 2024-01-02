@@ -27,10 +27,8 @@
     <nav class="navbar top-space navbar-expand-lg navbar-boxed navbar-light bg-transparent header-light fixed-top header-reverse-scroll">
         <div class="container-fluid nav-header-container">
             <div class="col-auto col-sm-6 col-lg-2 me-auto ps-lg-0">
-                <a class="navbar-brand" href="{{ route('index') }}">
-                    <img src="{{ asset('images/logo-fast-blue-black.png') }}" data-at2x="images/logo-fast-blue-black@2x.png" class="default-logo" alt="">
-                    <img src="{{ asset('images/logo-fast-blue-black.png') }}" data-at2x="images/logo-fast-blue-black@2x.png" class="alt-logo" alt="">
-                    <img src="{{ asset('images/logo-fast-blue-black.png') }}" data-at2x="images/logo-fast-blue-black@2x.png" class="mobile-logo" alt="">
+                <a class="navbar-brand-text" href="{{ route('index') }}">
+                    oatllo
                 </a>
             </div>
             <div class="col-auto menu-order px-lg-0">

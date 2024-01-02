@@ -57,11 +57,31 @@
                 </div>
                 <div class="col-12 col-md-3 text-center text-md-end">
                     <div class="social-icon-style-12">
+
+                        @php
+                            $facebookUrl = \App\Data\SocialMedia\SocialMediaUrl::getSocialUrl(\App\Data\SocialMedia\SocialMediaType::FACEBOOK);
+                            $instagramUrl = \App\Data\SocialMedia\SocialMediaUrl::getSocialUrl(\App\Data\SocialMedia\SocialMediaType::INSTAGRAM);
+                            $linkedinUrl = \App\Data\SocialMedia\SocialMediaUrl::getSocialUrl(\App\Data\SocialMedia\SocialMediaType::LINKEDIN);
+                            $twitterUrl = \App\Data\SocialMedia\SocialMediaUrl::getSocialUrl(\App\Data\SocialMedia\SocialMediaType::TWITTER);
+                        @endphp
                         <ul class="extra-small-icon light">
-                            <li><a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a class="dribbble" href="http://www.dribbble.com" target="_blank"><i class="fab fa-dribbble"></i></a></li>
-                            <li><a class="twitter" href="http://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                            <li><a class="instagram" href="http://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            @if(!is_null($facebookUrl))
+                                <li><a class="facebook" href="{{ $facebookUrl }}" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            @endif
+
+                            @if(!is_null($instagramUrl))
+                                <li><a class="instagram" href="{{ $instagramUrl }}" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            @endif
+
+                            @if(!is_null($linkedinUrl))
+                                <li><a class="instagram" href="{{ $linkedinUrl }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a></li>
+                            @endif
+
+                            @if(!is_null($twitterUrl))
+                                <li><a class="instagram" href="{{ $twitterUrl }}" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></li>
+                            @endif
+
+
                         </ul>
                     </div>
                 </div>

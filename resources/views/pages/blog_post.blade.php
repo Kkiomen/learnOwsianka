@@ -24,19 +24,19 @@
                         @if(!empty($tagsHeader))
                             <div class="alt-font text-fast-blue text-uppercase font-weight-500 margin-30px-bottom xs-margin-10px-bottom">
                                 @foreach($tagsHeader as $tag)
-                                    <a href="{{ route('blogListTag', ['tag' => str_replace([' ', ], '', $tag)]) }}" class="text-fast-blue">{{ $tag }}</a><span class="margin-10px-lr">&#8226;</span>
+                                    <a href="{{ route('blogListTag', ['tag' => strtolower(str_replace([' ', ], '', $tag))]) }}" class="text-fast-blue">{{ strtoupper($tag) }}</a><span class="margin-10px-lr">&#8226;</span>
                                 @endforeach
                             </div>
                         @endif
 
-                        <h3 class="alt-font font-weight-500 letter-spacing-minus-1px text-extra-dark-gray">{{ $post->title }}</h3>
+                        <h1 class="alt-font font-weight-500 letter-spacing-minus-1px text-extra-dark-gray text-xl" style="font-size: 2rem; line-height: 2.4rem">{{ $post->title }}</h1>
                         <span class="alt-font d-block margin-15px-tb">{{ __('basic.by') }} <strong>Jakub Owsianka</strong> {{ __('basic.on') }} <strong>{{ $post->created_at->format('Y-m-d') }}</strong></span>
                     </div>
                 </div>
 
                 @if($post->image_url !== null)
                     <div class="col-12 col-lg-6 px-0 order-1 align-self-end md-margin-60px-bottom">
-                        <img class="overlap-image border-radius-8px md-no-margin-bottom" src="{{ $post->image_url }}" alt="{{ $post->title }}" />
+                        <img class="overlap-image border-radius-8px md-no-margin-bottom" src="{{ asset('storage/uploads/article/'. $post->image_url) }}" alt="{{ $post->title }}" />
                     </div>
                 @endif
                 <div class="col-12 col-lg-6 padding-9-rem-left overflow-hidden alt-font font-weight-600 text-white text-overlap-style-01 d-none d-md-block">Blog</div>

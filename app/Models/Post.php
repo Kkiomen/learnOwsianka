@@ -10,6 +10,6 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-      'social_post_id', 'social_type', 'image', 'text', 'tags', 'sended'
+      'social_post_id', 'social_type', 'image', 'text', 'tags', 'sended', 'language'
     ];
 }

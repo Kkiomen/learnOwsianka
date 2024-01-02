@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enum\BlogContentType;
 use App\Models\Blog;
 use App\Models\BlogContent;
+use App\Models\Post;
 use App\Models\SocialPost;
 use App\Service\GeneratorArticleService;
 use Illuminate\Http\Request;
@@ -52,8 +53,11 @@ class SocialPostController extends Controller
             return Redirect::back();
         }
 
+        $posts = Post::where('social_post_id', $id)->orderBy('language', 'desc')->get();
+
         return view('dashboard.socialPost.view', [
             'socialPost' => $socialPost,
+            'posts' => $posts
         ]);
     }
 

@@ -110,8 +110,16 @@
        style="z-index: 5; font-size: 4rem"
        href="{{ route('index') }}">oatllo</a>
     <!-- LAYER NR. 7 (SOCIAL MEDIA ICON) -->
+
+    @php
+        $facebookUrl = \App\Data\SocialMedia\SocialMediaUrl::getSocialUrl(\App\Data\SocialMedia\SocialMediaType::FACEBOOK);
+        $instagramUrl = \App\Data\SocialMedia\SocialMediaUrl::getSocialUrl(\App\Data\SocialMedia\SocialMediaType::INSTAGRAM);
+        $linkedinUrl = \App\Data\SocialMedia\SocialMediaUrl::getSocialUrl(\App\Data\SocialMedia\SocialMediaType::LINKEDIN);
+        $twitterUrl = \App\Data\SocialMedia\SocialMediaUrl::getSocialUrl(\App\Data\SocialMedia\SocialMediaType::TWITTER);
+    @endphp
+    @if(!is_null($facebookUrl))
     <a class="tp-caption tp-static-layer text-medium"
-       href="https://www.facebook.com/" target="_blank"
+       href="{{ $facebookUrl }}" target="_blank"
        data-x="['left','left','center','center']" data-hoffset="['30','50','-60','-60']"
        data-y="['bottom','bottom','bottom','bottom']" data-voffset="['100','170','20','20']"
        data-lineheight="['14','14','14','10']"
@@ -136,9 +144,12 @@
        data-paddingbottom="[5,5,5,5]"
        data-paddingleft="[5,5,5,5]"
        style="z-index: 999; display: inline-block; color: rgba(255,255,255,1);"><i class="fab fa-facebook-f"></i> </a>
+    @endif
+
+    @if(!is_null($instagramUrl))
     <!-- LAYER NR. 8 (SOCIAL MEDIA ICON) -->
     <a class="tp-caption tp-static-layer text-medium"
-       href="https://twitter.com/" target="_blank"
+       href="{{ $instagramUrl }}" target="_blank"
        data-x="['left','left','center','center']" data-hoffset="['70','72','0','0']"
        data-y="['bottom','bottom','bottom','bottom']" data-voffset="['100','170','20','20']"
        data-lineheight="['14','14','14','10']"
@@ -162,31 +173,37 @@
        data-paddingright="[5,5,5,5]"
        data-paddingbottom="[5,5,5,5]"
        data-paddingleft="[5,5,5,5]"
-       style="z-index: 999; display: inline-block;color: rgba(255,255,255,1);"><i class="fab fa-twitter"></i></a>
-    <!-- LAYER NR. 9 (SOCIAL MEDIA ICON) -->
-    <a class="tp-caption tp-static-layer text-medium"
-       href="https://www.linkedin.com/" target="_blank"
-       data-x="['left','left','center','center']" data-hoffset="['110','100','60','60']"
-       data-y="['bottom','bottom','bottom','bottom']" data-voffset="['94','165','12','10']"
-       data-width="['auto','auto','auto','auto']"
-       data-height="['auto','auto','auto','auto']"
-       data-whitespace="nowrap"
-       data-type="button"
-       data-actions='[{"event":"click","action":"scrollbelow","offset":"px","delay":"","speed":"1500","ease":"Power1.easeInOut"}]'
-       data-responsive_offset="on"
-       data-responsive="off"
-       data-startslide="0"
-       data-endslide="3"
-       data-frames='[{"delay":1500,"speed":1000,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-       data-visibility="['on','on','on','on']"
-       data-textAlign="['inherit','inherit','inherit','inherit']"
-       data-margintop="[0,0,0,0]"
-       data-marginright="[10,10,10,5]"
-       data-marginbottom="[0,0,0,0]"
-       data-marginleft="[0,0,0,0]"
-       data-paddingtop="[5,5,5,5]"
-       data-paddingright="[5,5,5,5]"
-       data-paddingbottom="[5,5,5,5]"
-       data-paddingleft="[5,5,5,5]"
-       style="z-index: 999; display: inline-block;color: rgba(255,255,255,1);"><i class="fab fa-linkedin-in"></i></a>
+       style="z-index: 999; display: inline-block;color: rgba(255,255,255,1);"><i class="fab fa-instagram"></i></a>
+    @endif
+
+    @if(!is_null($linkedinUrl))
+        <!-- LAYER NR. 9 (SOCIAL MEDIA ICON) -->
+        <a class="tp-caption tp-static-layer text-medium"
+           href="{{ $linkedinUrl }}" target="_blank"
+           data-x="['left','left','center','center']" data-hoffset="['110','100','60','60']"
+           data-y="['bottom','bottom','bottom','bottom']" data-voffset="['94','165','12','10']"
+           data-width="['auto','auto','auto','auto']"
+           data-height="['auto','auto','auto','auto']"
+           data-whitespace="nowrap"
+           data-type="button"
+           data-actions='[{"event":"click","action":"scrollbelow","offset":"px","delay":"","speed":"1500","ease":"Power1.easeInOut"}]'
+           data-responsive_offset="on"
+           data-responsive="off"
+           data-startslide="0"
+           data-endslide="3"
+           data-frames='[{"delay":1500,"speed":1000,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
+           data-visibility="['on','on','on','on']"
+           data-textAlign="['inherit','inherit','inherit','inherit']"
+           data-margintop="[0,0,0,0]"
+           data-marginright="[10,10,10,5]"
+           data-marginbottom="[0,0,0,0]"
+           data-marginleft="[0,0,0,0]"
+           data-paddingtop="[5,5,5,5]"
+           data-paddingright="[5,5,5,5]"
+           data-paddingbottom="[5,5,5,5]"
+           data-paddingleft="[5,5,5,5]"
+           style="z-index: 999; display: inline-block;color: rgba(255,255,255,1);"><i class="fab fa-linkedin-in"></i></a>
+    @endif
+
+
 @endsection

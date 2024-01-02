@@ -34,7 +34,7 @@ class HomeController extends Controller
     public function blogPost($slug)
     {
 //        $post = Blog::where('slug', $slug)->where('language', env('LANGUAGE'))->where('activated', true)->first();
-        $post = Blog::where('slug', $slug)->where('language', env('LANGUAGE'))->first();
+        $post = Blog::where('slug', $slug)->first();
 
         if(!$post){
             abort(404);
