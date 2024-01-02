@@ -117,7 +117,9 @@ class PostController extends Controller
 
         if ($request->hasFile('file-upload')) {
             $file = $request->file('file-upload');
-            $fileName = rand(1, 9999999) . $file->getClientOriginalName();
+            $fileName = rand(1, 9999999) . $file->getClientOriginalName() . $file->getClientOriginalExtension();
+            $path = $file->storeAs('folder/docelowy', $fileName, 'public');
+            dd($path);
             $disk = Storage::build([
                 'driver' => 'local',
                 'root' => storage_path('app/public'),
