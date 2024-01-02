@@ -11,6 +11,7 @@ use Gumlet\ImageResize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -117,22 +118,12 @@ class PostController extends Controller
         if ($request->hasFile('file-upload')) {
             $file = $request->file('file-upload');
             $fileName = rand(1, 9999999) . $file->getClientOriginalName();
+            $file->storeAs('/', $fileName, 'uploads');
 
             foreach (Post::where('social_post_id', $socialPost->id)->where('language', $language)->get() as $post) {
-
-                $image = new ImageResize($file->getRealPath());
-                $image->quality_jpg = 100;
-                $image->quality_png = 100;
-                $image->resizeToBestFit($sizes[$post->social_type]['width'], $sizes[$post->social_type]['height']);
-                $image->save(storage_path('app/public/uploads/' . $post->social_type . '/' . $fileName));
-
                 $post->image = $fileName;
                 $post->save();
             }
-
-            $image = new ImageResize($file->getRealPath());
-            $image->resizeToBestFit($sizes['article']['width'], $sizes['article']['height']);
-            $image->save(storage_path('app/public/uploads/' . 'article' . '/' . $fileName));
 
             $blogs = Blog::where('social_post_id', $socialPost->id)->where('language', $language)->get();
             foreach ($blogs as $blog) {
@@ -145,22 +136,12 @@ class PostController extends Controller
         if ($request->hasFile('file-uploade')) {
             $file = $request->file('file-uploade');
             $fileName = rand(1, 9999999) . $file->getClientOriginalName();
+            $file->storeAs('/', $fileName, 'uploads');
 
             foreach (Post::where('social_post_id', $socialPost->id)->where('language', $language)->get() as $post) {
-
-                $image = new ImageResize($file->getRealPath());
-                $image->quality_jpg = 100;
-                $image->quality_png = 100;
-                $image->resizeToBestFit($sizes[$post->social_type]['width'], $sizes[$post->social_type]['height']);
-                $image->save(storage_path('app\public\uploads\\' . $post->social_type . '\\' . $fileName));
-
                 $post->image = $fileName;
                 $post->save();
             }
-
-            $image = new ImageResize($file->getRealPath());
-            $image->resizeToBestFit($sizes['article']['width'], $sizes['article']['height']);
-            $image->save(storage_path('app\public\uploads\\' . 'article' . '\\' . $fileName));
 
             $blogs = Blog::where('social_post_id', $socialPost->id)->where('language', $language)->get();
             foreach ($blogs as $blog) {
