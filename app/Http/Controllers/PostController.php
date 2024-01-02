@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\SocialType;
+use App\Helper\ImageHelper;
 use App\Models\Blog;
 use App\Models\Post;
 use App\Models\SocialPost;
@@ -162,7 +163,7 @@ class PostController extends Controller
 
         foreach ($posts as $post) {
             $payload[$post->social_type][$post->language] = [
-                'image' =>  asset('storage/image-uploads/' . $post->image),
+                'image' =>  ImageHelper::getImage($post->image),
                 'language' => $post->language,
                 'content' => $post->text
             ];
