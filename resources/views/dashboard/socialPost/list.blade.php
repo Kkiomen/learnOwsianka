@@ -11,8 +11,20 @@
                 <div class="w-full">
                     <form method="POST" action="{{ route('socialPost.add') }}">
                     @csrf
+                        <div class="col-span-full">
+                            <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Title</label>
+                            <div class="mt-2">
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title" placeholder="Title"  />
+                            </div>
+                        </div>
                         <x-bladewind.input label="Title post" name="title" />
-                        <x-bladewind.datepicker required="true" label="Publication date (2024-01-11)" name="date" placeholder="2024-01-11" />
+                        <div class="col-span-full">
+                            <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Publication date</label>
+                            <div class="mt-2">
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title" placeholder="2024-01-11" value="{{ $blog->title }}"  />
+                            </div>
+                        </div>
+
                         <x-bladewind.button has_spinner="true"
                                             can_submit="true"
                                             name="save-user"
