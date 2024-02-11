@@ -5,6 +5,10 @@ namespace App\Service;
 use App\Api\LLM\LanguageModelSettings;
 use App\Api\LLM\LanguageModelType;
 use App\Api\LLM\OpenApi\OpenAiLanguageModel;
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionDto;
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestDto;
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestModelDto;
+use App\Api\MyVpsApplication\GeneratorChatGptCollection;
 use App\Enum\BlogContentType;
 use App\Enum\SocialType;
 use App\Models\Blog;
@@ -67,10 +71,9 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
 
     public function __construct(
-        private OpenAiLanguageModel $openAiLanguageModel
-    )
-    {
-    }
+        private OpenAiLanguageModel $openAiLanguageModel,
+        private GeneratorChatGptCollection $generatorChatGptCollection
+    ){}
 
     public function generate(int $socialPostId, string $language): void
     {
@@ -124,6 +127,14 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
         $currentMessage = $blog->title;
         $countOfGeneratedContent = rand(3,4);
 
+
+        $params = new ChatGptCollectionRequestDto();
+        $params->setIdExternal($blogId);
+        $params->setTemperature('0.7');
+        $params->setType('ARTICLE');
+        $params->setModel(ChatGptCollectionRequestModelDto::GPT_4);
+        $collection = [];
+
         for($i = 0; $i <= $countOfGeneratedContent; $i++) {
 
             if($i > 0 && $i < $countOfGeneratedContent) {
@@ -132,27 +143,49 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
                 $currentMessage = 'Dokończ to o czytm chciałeś napisać. Przejdź po mału do końca i napisz podsumowanie';
             }
 
-            $generatedContent = $this->openAiLanguageModel->generateWithConversation(
-                prompt: $currentMessage,
-                systemPrompt: self::GENERATE_ARTICLE_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language,
-                settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::INTELLIGENT),
-                messagesUser: $messages
-            );
-
-            $messages[] = ['role' => 'user', 'prompt' => $currentMessage];
-            $messages[] = ['role' => 'assistant', 'prompt' => $generatedContent];
-
             $content = BlogContent::create([
                 'blog_id' => $blog->id,
                 'header' => null,
-                'content' => $generatedContent,
+                'content' => null,
                 'image_url' => null,
                 'type' => BlogContentType::TEXT->value,
                 'sequence' => $i,
             ]);
 
-            $this->generateDecorationContentForBlog($content->id);
+            $collectionParams = new ChatGptCollectionDto();
+            $collectionParams->setIdExternal($content->id);
+            $collectionParams->setSort($i);
+            $collectionParams->setPrompt($currentMessage);
+            $collectionParams->setSystem(self::GENERATE_ARTICLE_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language);
+
+            $collection[] = $collectionParams;
+
+//            $generatedContent = $this->openAiLanguageModel->generateWithConversation(
+//                prompt: $currentMessage,
+//                systemPrompt: self::GENERATE_ARTICLE_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language,
+//                settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::INTELLIGENT),
+//                messagesUser: $messages
+//            );
+//
+//            $messages[] = ['role' => 'user', 'prompt' => $currentMessage];
+//            $messages[] = ['role' => 'assistant', 'prompt' => $generatedContent];
+
+
+            // Generate Decoration Content
+            $collectionParams = new ChatGptCollectionDto();
+            $collectionParams->setIdExternal($content->id);
+            $collectionParams->setSort($i);
+            $collectionParams->setSystem(self::GENERATE_ARTICLE_DESIGN);
+            $collectionParams->setPrompt('[LAST_MESSAGE_WITH_SAME_ID_EXTERNAL]');
+            $collectionParams->setAddLastMessage(false);
+
+            $collection[] = $collectionParams;
         }
+
+
+        $params->setCollection($collection);
+
+        $this->generatorChatGptCollection->generateContentByCollection($params);
     }
 
     public function generateContentForBlog(int $contentId)
@@ -185,19 +218,28 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
         ]);
     }
 
-    public function generateDecorationContentForBlog(int $contentId)
+    public function generateDecorationContentForBlog(int $contentId): ChatGptCollectionDto
     {
         set_time_limit(900);
         $contentToGenerate = BlogContent::where('id', $contentId)->first();
 
-        $generatedContent = $this->openAiLanguageModel->generate(
-            prompt: $contentToGenerate,
-            systemPrompt: self::GENERATE_ARTICLE_DESIGN,
-            settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::INTELLIGENT),
-        );
-        $contentToGenerate->update([
-            'content' => $generatedContent,
-        ]);
+        $collectionParams = new ChatGptCollectionDto();
+        $collectionParams->setIdExternal($contentToGenerate->id);
+        $collectionParams->setSystem(self::GENERATE_ARTICLE_DESIGN);
+        $collectionParams->setPrompt($contentToGenerate->content);
+        $collectionParams->setSort(null);
+        $collectionParams->setAddLastMessage(false);
+
+        return $collectionParams;
+
+//        $generatedContent = $this->openAiLanguageModel->generate(
+//            prompt: $contentToGenerate,
+//            systemPrompt: self::GENERATE_ARTICLE_DESIGN,
+//            settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::INTELLIGENT),
+//        );
+//        $contentToGenerate->update([
+//            'content' => $generatedContent,
+//        ]);
 
     }
 
@@ -241,5 +283,40 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
             systemPrompt: $systemPrompt,
             settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::INTELLIGENT),
         );
+    }
+
+    public function generateTitle(): string
+    {
+        $systemPrompt = 'You are Title Generator GPT, a professional content marketer who helps writers, bloggers, and content creators with crafting captivating titles for their articles.
+                        Wygeneruj tytuł artykułu dla bloga skierowanym do programistów.
+
+                        Artykuły tam są o symfony, laravel, wzorce projektowy, SOLID, ciekawostki PHP, wszystko o programowaniu co ciekawi programistów.
+
+                        Blog po prostu jest dla osób, które chcą się dowiedzieć fajnych rzeczy o programowaniu.
+                        Jak masz coś opisywać z programowania to w języku PHP
+
+                        Docelowi odbiorcy: Programiści
+
+
+                        ### Odpowiedź podaj w JSON i tylko JSON
+                        {
+                        "title": (generated title)
+                        }';
+
+
+        $generatedContent = $this->openAiLanguageModel->generate(
+            prompt: '',
+            systemPrompt: $systemPrompt,
+            settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::NORMAL),
+        );
+
+        $title = json_decode($generatedContent, true)['title'];
+
+        SocialPost::create([
+            'title' => $title,
+            'date_post' => '2024-01-11'
+        ]);
+
+        return $title;
     }
 }

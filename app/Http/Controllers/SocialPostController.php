@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestDto;
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestModelDto;
+use App\Api\MyVpsApplication\GeneratorChatGptCollection;
 use App\Enum\BlogContentType;
 use App\Models\Blog;
 use App\Models\BlogContent;
@@ -16,12 +19,14 @@ class SocialPostController extends Controller
 
 
     public function __construct(
-        private GeneratorArticleService $generatorArticleService
-    ){}
+        private GeneratorArticleService $generatorArticleService,
+        private GeneratorChatGptCollection $generatorChatGptCollection
+    ) {
+    }
 
     public function list()
     {
-        $socialPosts = SocialPost::orderBy('date_post','asc')->paginate(15);
+        $socialPosts = SocialPost::orderBy('date_post', 'asc')->paginate(15);
 
         return view('dashboard.socialPost.list', [
             'socialPosts' => $socialPosts,
@@ -49,7 +54,7 @@ class SocialPostController extends Controller
     public function view(Request $request, $id)
     {
         $socialPost = SocialPost::where('id', $id)->first();
-        if(!$socialPost) {
+        if (!$socialPost) {
             return Redirect::back();
         }
 
@@ -61,11 +66,11 @@ class SocialPostController extends Controller
         ]);
     }
 
-    public function generateArticle(Request $request,int $id, string $language)
+    public function generateArticle(Request $request, int $id, string $language)
     {
         $socialPost = SocialPost::where('id', $id)->first();
 
-        if($socialPost) {
+        if ($socialPost) {
             $this->generatorArticleService->generate($socialPost->id, $language);
         }
 
@@ -75,14 +80,14 @@ class SocialPostController extends Controller
     public function generateArticleAddContent(Request $request, int $blogId, string $type, int $contentId)
     {
         $blog = Blog::where('id', $blogId)->first();
-        if(!$blog) {
+        if (!$blog) {
             return Redirect::back();
         }
 
         $currentContent = null;
 
         foreach ($blog->contents as $content) {
-            if($content->id === $contentId) {
+            if ($content->id === $contentId) {
                 $currentContent = $content;
                 $i = $content->sequence;
 
@@ -96,7 +101,7 @@ class SocialPostController extends Controller
                 ]);
             }
 
-            if($currentContent !== null && $content->sequence > $currentContent->sequence) {
+            if ($currentContent !== null && $content->sequence > $currentContent->sequence) {
                 $i = $content->sequence;
                 $content->update([
                     'sequence' => ++$i,
@@ -110,17 +115,17 @@ class SocialPostController extends Controller
     public function removeBlogContent(Request $request, int $contentId)
     {
         $contentToDelete = BlogContent::where('id', $contentId)->first();
-        if(!$contentToDelete) {
+        if (!$contentToDelete) {
             return Redirect::back();
         }
 
         $blog = Blog::where('id', $contentToDelete->blog_id)->first();
-        if(!$blog) {
+        if (!$blog) {
             return Redirect::back();
         }
 
         foreach ($blog->contents as $content) {
-            if($content->sequence > $contentToDelete->sequence) {
+            if ($content->sequence > $contentToDelete->sequence) {
                 $i = $content->sequence;
                 $content->update([
                     'sequence' => --$i,
@@ -137,11 +142,11 @@ class SocialPostController extends Controller
     {
 
         $contentToUpdate = BlogContent::where('id', $contentId)->first();
-        if(!$contentToUpdate) {
+        if (!$contentToUpdate) {
             return Redirect::back();
         }
 
-        if($request->hasFile('file-upload')){
+        if ($request->hasFile('file-upload')) {
             $file = $request->file('file-upload');
             $fileName = $file->getClientOriginalName();
 
@@ -152,13 +157,13 @@ class SocialPostController extends Controller
                 'image_url' => $filename,
             ]);
 
-            if($request->get('image_alt') !== null){
+            if ($request->get('image_alt') !== null) {
                 $contentToUpdate->update([
                     'image_alt' => $request->get('image_alt')
                 ]);
             }
 
-        }else{
+        } else {
             $contentToUpdate->update([
                 'header' => $request->get('header'),
                 'content' => $request->get('content'),
@@ -166,7 +171,7 @@ class SocialPostController extends Controller
         }
 
 
-        if($request->get('image_alt') !== null){
+        if ($request->get('image_alt') !== null) {
             $contentToUpdate->update([
                 'image_alt' => $request->get('image_alt')
             ]);
@@ -182,7 +187,7 @@ class SocialPostController extends Controller
         $contentToUpdate = BlogContent::where('id', $contentId)->first();
         $blog = Blog::where('id', $contentToUpdate->blog_id)->first();
 
-        if(!$contentToUpdate || !$blog) {
+        if (!$contentToUpdate || !$blog) {
             return Redirect::back();
         }
 
@@ -197,11 +202,21 @@ class SocialPostController extends Controller
         $contentToUpdate = BlogContent::where('id', $contentId)->first();
         $blog = Blog::where('id', $contentToUpdate->blog_id)->first();
 
-        if(!$contentToUpdate || !$blog) {
+        if (!$contentToUpdate || !$blog) {
             return Redirect::back();
         }
 
-        $this->generatorArticleService->generateDecorationContentForBlog($contentId);
+        $params = new ChatGptCollectionRequestDto();
+        $params->setIdExternal($contentToUpdate->blog_id);
+        $params->setTemperature('0.7');
+        $params->setType('ARTICLE');
+        $params->setModel(ChatGptCollectionRequestModelDto::GPT_4);
+        $collection = [];
+
+        $collection[] = $this->generatorArticleService->generateDecorationContentForBlog($contentId);
+        $params->setCollection($collection);
+
+        $this->generatorChatGptCollection->generateContentByCollection($params);
 
         return Redirect::back();
     }
@@ -209,7 +224,7 @@ class SocialPostController extends Controller
     public function deleteBlog(Request $request, int $id)
     {
         $blog = Blog::where('id', $id)->first();
-        if(!$blog) {
+        if (!$blog) {
             return Redirect::back();
         }
 
@@ -219,5 +234,58 @@ class SocialPostController extends Controller
         return Redirect::back();
     }
 
+    public function generateTitle(Request $request)
+    {
+        $title = $this->generatorArticleService->generateTitle();
 
+        return Redirect::back();
+    }
+
+    public function updateData(Request $request, int $id)
+    {
+        $socialPost = SocialPost::where('id', $id)->first();
+        foreach ($socialPost->blogs as $blog) {
+            $generatedData = $this->generatorChatGptCollection->getGeneratedContentByIdExternal($blog->id);
+
+            $actualGeneratedData = [];
+
+            foreach ($generatedData['collections'] as $collection) {
+                if (key_exists($collection['id_external'], $actualGeneratedData) || $collection['status_generate'] !== 1) {
+                    continue;
+                }
+
+                $actualGeneratedData[$collection['id_external']] = [
+                    'id' => $collection['id'],
+                    'created_at' => $collection['created_at'],
+                    'updated_at' => $collection['updated_at'],
+                    'prompt' => $collection['prompt'],
+                    'system' => $collection['system'],
+                    'sort' => $collection['sort'],
+                    'generated_content' => $collection['generated_content']
+                ];
+
+            }
+
+            if (empty($actualGeneratedData)) {
+                continue;
+            }
+
+            foreach ($blog->contents as $content) {
+                if(!key_exists($content->id, $actualGeneratedData)){
+                    continue;
+                }
+
+                $generatedContent = $actualGeneratedData[$content->id];
+
+                if($content->generatedData != $generatedContent['updated_at']){
+                    $content->update([
+                        'generatedData' => $generatedContent['updated_at'],
+                        'content' => $generatedContent['generated_content']
+                    ]);
+                }
+            }
+        }
+
+        return Redirect::back();
+    }
 }

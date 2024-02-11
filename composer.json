@@ -15,7 +15,8 @@
         "livewire/volt": "^1.0",
         "mkocansey/bladewind": "^2.4",
         "openai-php/client": "^0.8.0",
-        "spatie/laravel-sitemap": "^7.0"
+        "spatie/laravel-sitemap": "^7.0",
+      "ext-http": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

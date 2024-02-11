@@ -7,6 +7,14 @@
 
     <div class="pb-4 mt-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <a href="{{ route('socialPost.generateTitle') }}">
+                <div class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Generuj tytuł</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="pb-4 mt-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="w-full">
                     <form method="POST" action="{{ route('socialPost.add') }}">
@@ -23,11 +31,10 @@
                                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date" type="text" name="date" placeholder="2024-01-11"/>
                             </div>
                         </div>
-                        <x-bladewind.button has_spinner="true"
-                                            can_submit="true"
-                                            name="save-user"
-                                            class="mx-auto block"
-                                            onclick="unhide('.save-user .bw-spinner')">Add</x-bladewind.button>
+
+                        <div class="mt-4 text-right">
+                            <button class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" name="save-user" type="submit">Add</button>
+                        </div>
                     </form>
                 </div>
             </div>

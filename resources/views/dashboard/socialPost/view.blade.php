@@ -39,6 +39,14 @@
                                 </button>
                             </a>
                         </div>
+                        <div class="mx-1">
+                            <a href="{{ route('socialPost.updateDataApi', ['id' => $socialPost->id]) }}">
+                                <button type="button"
+                                        class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                    Update Data
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
