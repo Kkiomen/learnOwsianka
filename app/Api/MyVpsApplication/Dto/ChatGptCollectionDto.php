@@ -7,6 +7,8 @@ class ChatGptCollectionDto
     private ?string $idExternal;
     private ?string $prompt;
     private ?string $system;
+    private ?string $webhook = null;
+    private ?string $webhookType = null;
     private ?int $sort;
 
     private ?bool $addLastMessage = true;
@@ -70,4 +72,30 @@ class ChatGptCollectionDto
 
         return $this;
     }
+
+    public function getWebhook(): ?string
+    {
+        return $this->webhook;
+    }
+
+    public function setWebhook(?string $webhook): self
+    {
+        $this->webhook = $webhook;
+
+        return $this;
+    }
+
+    public function getWebhookType(): ?string
+    {
+        return $this->webhookType;
+    }
+
+    public function setWebhookType(?string $webhookType): self
+    {
+        $this->webhookType = $webhookType;
+
+        return $this;
+    }
+
+
 }

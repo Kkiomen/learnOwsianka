@@ -51,6 +51,8 @@ class GeneratorChatGptCollection
                 'prompt' => $collection->getPrompt(),
                 'system' => $collection->getSystem(),
                 'sort' => $collection->getSort(),
+                'webhook' => $collection->getWebhook(),
+                'webhook_type' => $collection->getWebhookType(),
                 'add_last_messages' => $collection->getAddLastMessage() ?? false
             ];
         }

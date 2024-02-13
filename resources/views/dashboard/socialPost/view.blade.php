@@ -24,10 +24,26 @@
                     </h2>
                     <div class="flex gap-10">
                         <div class="mx-1">
+                            <a href="{{ route('socialPost.createArticle', ['id' => $socialPost->id, 'language' => 'pl']) }}">
+                                <button type="button"
+                                        class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                    Create Article - Polish language
+                                </button>
+                            </a>
+                        </div>
+                        <div class="mx-1">
                             <a href="{{ route('socialPost.generateArticle', ['id' => $socialPost->id, 'language' => 'pl']) }}">
                                 <button type="button"
                                         class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
                                     Generate - Polish language
+                                </button>
+                            </a>
+                        </div>
+                        <div class="mx-1">
+                            <a href="{{ route('socialPost.createArticle', ['id' => $socialPost->id, 'language' => 'en']) }}">
+                                <button type="button"
+                                        class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                    Create Article - English language
                                 </button>
                             </a>
                         </div>
@@ -44,6 +60,15 @@
                                 <button type="button"
                                         class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
                                     Update Data
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="mx-1">
+                            <a href="{{ route('socialPost.content-blog.generate', ['id' => $socialPost->id]) }}"  onclick="return confirm('Czy chcesz to na pewno zrobić?')">
+                                <button type="button"
+                                        class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                    Generate All content
                                 </button>
                             </a>
                         </div>
@@ -335,6 +360,25 @@
                                     </div>
                                 </form>
                             @endforeach
+
+                            @if(count($blog->contents) == 0)
+                                <div class="flex">
+                                    <a href="{{ route('socialPost.generateArticleAddContent', ['blogId' => $blog->id, 'type' => 'image', 'contentId' => 0 ]) }}"
+                                       class="w-1/2 px-2">
+                                        <div
+                                            class="border border-b border-gray-300 border-dashed my-5 mx-auto text-center hover:cursor-pointer hover:border-solid hover:border-black">
+                                            <i class="fa-regular fa-image" style="color: #a8acb0"></i>
+                                        </div>
+                                    </a>
+                                    <a href="{{ route('socialPost.generateArticleAddContent', ['blogId' => $blog->id, 'type' => 'text', 'contentId' => 0 ]) }}"
+                                       class="w-1/2 px-2">
+                                        <div
+                                            class="border border-b border-gray-300 border-dashed my-5 mx-auto text-center hover:cursor-pointer hover:border-solid hover:border-black">
+                                            <i class="fa-solid fa-font" style="color: #a8acb0"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
 
 
                         </div>

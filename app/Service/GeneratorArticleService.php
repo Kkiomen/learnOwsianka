@@ -18,6 +18,8 @@ use App\Models\SocialPost;
 class GeneratorArticleService
 {
 
+    const WEBHOOK = 'https://oatllo.pl/api/callback/generate/data/';
+
     const GENERATE_ARTICLE_CONTENT_PROMPT = '
     Na podstawie tytułu, który poda użytkownik przygotuj treść artykułu na bloga.
 Ma być on zgodny z SEO oraz zawierać jak najwięcej słów kluczowych.
@@ -37,6 +39,28 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
 ### Rozbudowywuj każdą treść. Jeśli podajesz nagłówek to treść musi mieć minimum 7 zdań.
 ';
+
+    const GENERATE_ARTICLE_ONLY_CONTENT_PROMPT = '
+    Na podstawie konspektu, który poda użytkownik przygotuj treść artykułu na bloga.
+Ma być on zgodny z SEO oraz zawierać jak najwięcej słów kluczowych.
+###
+Treść będzie dalej kontynuowana w kolejnych wiadomościach. Dlatego nie kończ jej na jednej. Zwykle będzie kontynuowana 3-4 razy
+
+### Nie pisz podsumowania. Zakończ treść tak żeby możnaby było ją kontynuować w kolejnej. Nie pisz o tym użytkownikowi.
+Podsumowanie tylko wtedy, kiedy poprosi Cię oto użytkownik
+
+### Nie używaj markdown. W momencie przedstawiania kodu, umieść go między znacznikami:
+<pre><code class="language-php"> ... </code></pre>
+
+###
+Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozycji na liście (za pomocą linków skokowych).
+
+### NIE UŻYWAJ MARKDOWN W ARTYKULE, jedyni możesz użyć znaczników html
+
+### Rozbudowywuj każdą treść. Jeśli podajesz nagłówek to treść musi mieć minimum 7 zdań.
+';
+
+
     /**
      * Na podstawie tytułu, który poda użytkownik przygotuj treść artykułu na bloga.
      * Ma być on zgodny z SEO oraz zawierać jak najwięcej słów kluczowych.
@@ -75,7 +99,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
         private GeneratorChatGptCollection $generatorChatGptCollection
     ){}
 
-    public function generate(int $socialPostId, string $language): void
+    public function generate(int $socialPostId, string $language, bool $withContent = true): void
     {
         set_time_limit(900);
 
@@ -113,7 +137,9 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
             'activated' => false
         ]);
 
-        $this->generateContentForArticle($blog->id, $language);
+        if($withContent){
+            $this->generateContentForArticle($blog->id, $language);
+        }
     }
 
     public function generateContentForArticle(int $blogId, string $language): void
@@ -125,7 +151,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
         $messages = [];
         $currentMessage = $blog->title;
-        $countOfGeneratedContent = rand(3,4);
+        $countOfGeneratedContent = rand(4,8);
 
 
         $params = new ChatGptCollectionRequestDto();
@@ -156,26 +182,19 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
             $collectionParams->setIdExternal($content->id);
             $collectionParams->setSort($i);
             $collectionParams->setPrompt($currentMessage);
+            $collectionParams->setWebhook(self::WEBHOOK . $content->id);
+            $collectionParams->setWebhookType('ARTICLE_CONTENT');
             $collectionParams->setSystem(self::GENERATE_ARTICLE_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language);
 
             $collection[] = $collectionParams;
-
-//            $generatedContent = $this->openAiLanguageModel->generateWithConversation(
-//                prompt: $currentMessage,
-//                systemPrompt: self::GENERATE_ARTICLE_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language,
-//                settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::INTELLIGENT),
-//                messagesUser: $messages
-//            );
-//
-//            $messages[] = ['role' => 'user', 'prompt' => $currentMessage];
-//            $messages[] = ['role' => 'assistant', 'prompt' => $generatedContent];
-
 
             // Generate Decoration Content
             $collectionParams = new ChatGptCollectionDto();
             $collectionParams->setIdExternal($content->id);
             $collectionParams->setSort($i);
             $collectionParams->setSystem(self::GENERATE_ARTICLE_DESIGN);
+            $collectionParams->setWebhook(self::WEBHOOK . $content->id);
+            $collectionParams->setWebhookType('ARTICLE_CONTENT');
             $collectionParams->setPrompt('[LAST_MESSAGE_WITH_SAME_ID_EXTERNAL]');
             $collectionParams->setAddLastMessage(false);
 
@@ -226,6 +245,8 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
         $collectionParams = new ChatGptCollectionDto();
         $collectionParams->setIdExternal($contentToGenerate->id);
         $collectionParams->setSystem(self::GENERATE_ARTICLE_DESIGN);
+        $collectionParams->setWebhook(self::WEBHOOK . $contentToGenerate->id);
+        $collectionParams->setWebhookType('ARTICLE_CONTENT');
         $collectionParams->setPrompt($contentToGenerate->content);
         $collectionParams->setSort(null);
         $collectionParams->setAddLastMessage(false);
@@ -318,5 +339,48 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
         ]);
 
         return $title;
+    }
+
+    public function generateAllContent(int $socialPostId)
+    {
+        $blogs = Blog::where('social_post_id', $socialPostId)->get();
+
+        foreach ($blogs as $blog) {
+            $params = new ChatGptCollectionRequestDto();
+            $params->setIdExternal($blog->id);
+            $params->setTemperature('0.7');
+            $params->setType('ARTICLE');
+            $params->setModel(ChatGptCollectionRequestModelDto::GPT_4);
+            $collection = [];
+
+            $language = ($blog->language == 'pl') ? 'polskim' : 'angielskim';
+
+            foreach ($blog->contents as $content){
+                $collectionParams = new ChatGptCollectionDto();
+                $collectionParams->setIdExternal($content->id);
+                $collectionParams->setSort($content->sequence);
+                $collectionParams->setPrompt($content->content);
+                $collectionParams->setWebhook(self::WEBHOOK . $content->id);
+                $collectionParams->setWebhookType('ARTICLE_CONTENT');
+                $collectionParams->setSystem(self::GENERATE_ARTICLE_ONLY_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language);
+
+                $collection[] = $collectionParams;
+
+                // Generate Decoration Content
+                $collectionParams = new ChatGptCollectionDto();
+                $collectionParams->setIdExternal($content->id);
+                $collectionParams->setSort($content->sequence);
+                $collectionParams->setSystem(self::GENERATE_ARTICLE_DESIGN);
+                $collectionParams->setWebhook(self::WEBHOOK . $content->id);
+                $collectionParams->setWebhookType('ARTICLE_CONTENT');
+                $collectionParams->setPrompt('[LAST_MESSAGE_WITH_SAME_ID_EXTERNAL]');
+                $collectionParams->setAddLastMessage(false);
+
+                $collection[] = $collectionParams;
+            }
+
+            $params->setCollection($collection);
+            $this->generatorChatGptCollection->generateContentByCollection($params);
+        }
     }
 }

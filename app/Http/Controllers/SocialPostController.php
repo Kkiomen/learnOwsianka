@@ -66,6 +66,28 @@ class SocialPostController extends Controller
         ]);
     }
 
+    public function createArticle(Request $request, int $id, string $language)
+    {
+        $socialPost = SocialPost::where('id', $id)->first();
+
+        if ($socialPost) {
+            $this->generatorArticleService->generate($socialPost->id, $language, false);
+        }
+
+        return Redirect::back();
+    }
+
+    public function generateAllContent(Request $request, int $id)
+    {
+        $socialPost = SocialPost::where('id', $id)->first();
+
+        if ($socialPost) {
+            $this->generatorArticleService->generateAllContent($socialPost->id);
+        }
+
+        return Redirect::back();
+    }
+
     public function generateArticle(Request $request, int $id, string $language)
     {
         $socialPost = SocialPost::where('id', $id)->first();
@@ -85,6 +107,20 @@ class SocialPostController extends Controller
         }
 
         $currentContent = null;
+
+        if($contentId === 0){
+            BlogContent::create([
+                'blog_id' => $blog->id,
+                'header' => null,
+                'content' => null,
+                'image_url' => null,
+                'type' => $type,
+                'sequence' => 1,
+            ]);
+
+            return Redirect::back();
+        }
+
 
         foreach ($blog->contents as $content) {
             if ($content->id === $contentId) {
