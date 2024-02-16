@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestDto;
 use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestModelDto;
 use App\Api\MyVpsApplication\GeneratorChatGptCollection;
-use App\Enum\BlogContentType;
 use App\Models\Blog;
 use App\Models\BlogContent;
 use App\Models\Post;
@@ -26,7 +25,7 @@ class SocialPostController extends Controller
 
     public function list()
     {
-        $socialPosts = SocialPost::orderBy('date_post', 'asc')->paginate(15);
+        $socialPosts = SocialPost::orderBy('date_post', 'desc')->paginate(15);
 
         return view('dashboard.socialPost.list', [
             'socialPosts' => $socialPosts,
@@ -144,6 +143,13 @@ class SocialPostController extends Controller
                 ]);
             }
         }
+
+        return Redirect::back();
+    }
+
+    public function generateContentPrototype(Request $request, Blog $id)
+    {
+        $this->generatorArticleService->generatePrototype($id);
 
         return Redirect::back();
     }

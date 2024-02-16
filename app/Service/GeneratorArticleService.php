@@ -57,7 +57,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
 ### NIE UŻYWAJ MARKDOWN W ARTYKULE, jedyni możesz użyć znaczników html
 
-### Rozbudowywuj każdą treść. Jeśli podajesz nagłówek to treść musi mieć minimum 7 zdań.
+### Rozbudowywuj każdą treść. Jeśli podajesz nagłówek to treść musi mieć minimum 10 zdań.
 ';
 
 
@@ -156,7 +156,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
         $params = new ChatGptCollectionRequestDto();
         $params->setIdExternal($blogId);
-        $params->setTemperature('0.7');
+        $params->setTemperature('1');
         $params->setType('ARTICLE');
         $params->setModel(ChatGptCollectionRequestModelDto::GPT_4);
         $collection = [];
@@ -316,7 +316,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
                         Blog po prostu jest dla osób, które chcą się dowiedzieć fajnych rzeczy o programowaniu.
                         Jak masz coś opisywać z programowania to w języku PHP
 
-                        Docelowi odbiorcy: Programiści
+                        Docelowi odbiorcy: Programiści PHP
 
 
                         ### Odpowiedź podaj w JSON i tylko JSON
@@ -335,7 +335,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
         SocialPost::create([
             'title' => $title,
-            'date_post' => '2024-01-11'
+            'date_post' => date('Y-m-d')
         ]);
 
         return $title;
@@ -348,7 +348,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
         foreach ($blogs as $blog) {
             $params = new ChatGptCollectionRequestDto();
             $params->setIdExternal($blog->id);
-            $params->setTemperature('0.7');
+            $params->setTemperature('1');
             $params->setType('ARTICLE');
             $params->setModel(ChatGptCollectionRequestModelDto::GPT_4);
             $collection = [];
@@ -381,6 +381,46 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
             $params->setCollection($collection);
             $this->generatorChatGptCollection->generateContentByCollection($params);
+        }
+    }
+
+    public function generatePrototype(Blog $blog)
+    {
+        $postLanguage = $blog->language == 'pl' ? 'polskim' : 'angielskim';
+
+        $contents = $this->openAiLanguageModel->generate(
+            prompt: $blog->title,
+            systemPrompt: 'Daj przykłady tytuły artykułu oraz spisu treści.
+                            ### Napisz w języku: '. $postLanguage .'
+                            ###
+                            Odpowiedź podaj w json i tylko w json:
+
+                            {
+                            "title_article": "XYZ",
+                            "table_of_content" [
+                            {
+                            "header": "XYZ",
+                            "content": "XYZ"
+                            }
+                            ]
+                            }',
+            settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::INTELLIGENT),
+        );
+
+
+        $json = json_decode($contents, true);
+
+        if(isset($json['table_of_content'])){
+            foreach ($json['table_of_content'] as $key => $value) {
+                BlogContent::create([
+                    'blog_id' => $blog->id,
+                    'header' => $value['header'],
+                    'content' => $value['content'],
+                    'image_url' => null,
+                    'type' => BlogContentType::TEXT->value,
+                    'sequence' => $key,
+                ]);
+            }
         }
     }
 }

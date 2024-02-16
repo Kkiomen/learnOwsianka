@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/social-post/remove/blog/{id}', [\App\Http\Controllers\SocialPostController::class, 'deleteBlog'])->name('socialPost.deleteBlog');
     Route::get('/dashboard/social-post/view/{id}', [\App\Http\Controllers\SocialPostController::class, 'view'])->name('socialPost.view');
     Route::get('/dashboard/social-post/view/{id}/blog/generate', [\App\Http\Controllers\SocialPostController::class, 'generateAllContent'])->name('socialPost.content-blog.generate');
+    Route::get('/dashboard/social-post/view/{id}/blog/generate-prototype', [\App\Http\Controllers\SocialPostController::class, 'generateContentPrototype'])->name('socialPost.content-blog.generate.prototype');
     Route::get('/dashboard/social-post/view/{id}/create/article/{language}', [\App\Http\Controllers\SocialPostController::class, 'createArticle'])->name('socialPost.createArticle');
     Route::get('/dashboard/social-post/view/{id}/generate/article/{language}', [\App\Http\Controllers\SocialPostController::class, 'generateArticle'])->name('socialPost.generateArticle');
     Route::get('/dashboard/social-post/view/blog-content/{id}/generate/update-data', [\App\Http\Controllers\SocialPostController::class, 'updateData'])->name('socialPost.updateDataApi');
