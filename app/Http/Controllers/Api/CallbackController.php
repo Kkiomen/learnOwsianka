@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\BlogContent;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CallbackController extends Controller
@@ -24,8 +25,16 @@ class CallbackController extends Controller
             $blogContent->save();
 
             return response()->json(['status' => 0, 'message' => 'Success']);
+        }else if($body['type'] === 'BLOG_POST') {
+            $data = $body['data'];
+            $content = $data['content'];
+            $post = Post::where('id', $entityId)->first();
+            $post->content = $content;
+            $post->save();
+
+            return response()->json(['status' => 0, 'message' => 'Success']);
         }
 
-        dd($body, $entityId);
+        return response()->json(['status' => 1, 'error' => 'Invalid request'], 400);
     }
 }

@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/social-post/generate/title', [\App\Http\Controllers\SocialPostController::class, 'generateTitle'])->name('socialPost.generateTitle');
     Route::get('/dashboard/social-post/remove/{id}', [\App\Http\Controllers\SocialPostController::class, 'remove'])->name('socialPost.remove');
     Route::get('/dashboard/social-post/remove/blog/{id}', [\App\Http\Controllers\SocialPostController::class, 'deleteBlog'])->name('socialPost.deleteBlog');
-    Route::get('/dashboard/social-post/view/{id}', [\App\Http\Controllers\SocialPostController::class, 'view'])->name('socialPost.view');
+    Route::get('/dashboard/social-post/view/{id}/article', [\App\Http\Controllers\SocialPostController::class, 'view'])->name('socialPost.view.article');
+    Route::get('/dashboard/social-post/view/{id}/posts', [\App\Http\Controllers\SocialPostController::class, 'viewPosts'])->name('socialPost.view.posts');
     Route::get('/dashboard/social-post/view/{id}/blog/generate', [\App\Http\Controllers\SocialPostController::class, 'generateAllContent'])->name('socialPost.content-blog.generate');
     Route::get('/dashboard/social-post/view/{id}/blog/generate-prototype', [\App\Http\Controllers\SocialPostController::class, 'generateContentPrototype'])->name('socialPost.content-blog.generate.prototype');
     Route::get('/dashboard/social-post/view/{id}/create/article/{language}', [\App\Http\Controllers\SocialPostController::class, 'createArticle'])->name('socialPost.createArticle');

@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionDto;
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestDto;
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestModelDto;
+use App\Api\MyVpsApplication\GeneratorChatGptCollection;
 use App\Enum\SocialType;
 use App\Helper\ImageHelper;
 use App\Models\Blog;
 use App\Models\Post;
 use App\Models\SocialPost;
 use App\Service\GeneratorArticleService;
-use Gumlet\ImageResize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -28,7 +30,8 @@ class PostController extends Controller
     ];
 
     public function __construct(
-        private GeneratorArticleService $generatorArticleService
+        private GeneratorArticleService $generatorArticleService,
+        private GeneratorChatGptCollection $generatorChatGptCollection
     ) {
     }
 
@@ -37,8 +40,16 @@ class PostController extends Controller
 
         $socialPost = SocialPost::where('id', $socialPostId)->first();
 
+        $params = new ChatGptCollectionRequestDto();
+        $params->setIdExternal($socialPost->id);
+        $params->setTemperature('1');
+        $params->setType('POSTS');
+        $params->setModel(ChatGptCollectionRequestModelDto::GPT_4);
+        $collection = [];
+
         if ($socialPost) {
 
+            $lp = 0;
             foreach (self::SOCIAL_TYPES as $socialType) {
 
                foreach (self::LANGUAGES as $language){
@@ -49,24 +60,44 @@ class PostController extends Controller
 
                    foreach (Blog::where('social_post_id', $socialPost->id)->where('language', $language)->get() as $blog) {
 
-                       $post = new Post();
-                       $postContent = $this->generatorArticleService->generatePostToSocialMediaByBlogArticle($blog,
-                           $socialType);
+                       $lp++;
 
+                       $post = new Post();
                        $post->social_post_id = $socialPostId;
                        $post->social_type = $socialType->value;
-                       $post->text = $postContent;
+                       $post->text = null;
                        $post->language = $blog->language;
                        $post->sended = false;
-
                        $post->save();
+
+
+                       $postLanguage = $blog->language == 'pl' ? 'polskim' : 'angielskim';
+                       $systemPrompt = 'Stwórz treść posta na . ' . $socialType->value . '
+                        Na początku przedstaw temat w taki sposób aby troche wytłumaczyć temat ale i żeby zachęcić do późniejszego przeczytania artykułu
+                        ### Nie możesz się witać z czytelnikiem
+                        ### Pisz w pierwszej formie
+                        ### Dodaj emotikony aby urozmaicić wpis
+                        ### Napisz w języku: '. $postLanguage .'
+                        ###
+                        Link do postu: '. route('blogPost', ['slug' => $blog->slug]);
+
+                       $collectionParams = new ChatGptCollectionDto();
+                       $collectionParams->setIdExternal($post->id);
+                       $collectionParams->setSort($lp);
+                       $collectionParams->setPrompt($blog->title);
+                       $collectionParams->setWebhook(GeneratorArticleService::WEBHOOK . $post->id);
+                       $collectionParams->setWebhookType('BLOG_POST');
+                       $collectionParams->setAddLastMessage(false);
+                       $collectionParams->setSystem($systemPrompt);
+
+                       $collection[] = $collectionParams;
                    }
                }
-
-
             }
 
+            $params->setCollection($collection);
 
+            $this->generatorChatGptCollection->generateContentByCollection($params);
         }
 
         return Redirect::back();

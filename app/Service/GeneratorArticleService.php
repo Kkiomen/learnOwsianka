@@ -210,31 +210,34 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
     public function generateContentForBlog(int $contentId)
     {
         set_time_limit(900);
-        $contentToGenerate = BlogContent::where('id', $contentId)->first();
-        $blog = Blog::where('id', $contentToGenerate->blog_id)->first();
+        $blogContent = BlogContent::where('id', $contentId)->first();
+        $blog = Blog::where('id', $blogContent->blog_id)->first();
 
 
         $language = ($blog->language == 'pl') ? 'polskim' : 'angielskim';
 
-        $messages = [];
-        $messages[] = ['role' => 'user', 'prompt' => $blog->title];
-        foreach ($blog->contents as $content){
-            if($content->id == $contentToGenerate->id) {
-                break;
-            }
-            $messages[] = ['role' => 'assistant', 'prompt' => $content->content];
-        }
+        $params = new ChatGptCollectionRequestDto();
+        $params->setIdExternal($blog->id);
+        $params->setTemperature('1');
+        $params->setType('ARTICLE');
+        $params->setModel(ChatGptCollectionRequestModelDto::GPT_4);
+        $collection = [];
 
-        $generatedContent = $this->openAiLanguageModel->generateWithConversation(
-            prompt: $contentToGenerate,
-            systemPrompt: self::GENERATE_ARTICLE_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language,
-            settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::NORMAL),
-            messagesUser: $messages
-        );
 
-        $contentToGenerate->update([
-            'content' => $generatedContent,
-        ]);
+        $collectionParams = new ChatGptCollectionDto();
+        $collectionParams->setIdExternal($blogContent->id);
+        $collectionParams->setSort($blogContent->sequence);
+        $collectionParams->setPrompt($blogContent->content);
+        $collectionParams->setWebhook(self::WEBHOOK . $blogContent->id);
+        $collectionParams->setWebhookType('ARTICLE_CONTENT');
+        $collectionParams->setAddLastMessage(true);
+        $collectionParams->setSystem(self::GENERATE_ARTICLE_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language);
+
+        $collection[] = $collectionParams;
+
+        $params->setCollection($collection);
+
+        $this->generatorChatGptCollection->generateContentByCollection($params);
     }
 
     public function generateDecorationContentForBlog(int $contentId): ChatGptCollectionDto
@@ -252,16 +255,6 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
         $collectionParams->setAddLastMessage(false);
 
         return $collectionParams;
-
-//        $generatedContent = $this->openAiLanguageModel->generate(
-//            prompt: $contentToGenerate,
-//            systemPrompt: self::GENERATE_ARTICLE_DESIGN,
-//            settings: (new LanguageModelSettings())->setLanguageModelType(LanguageModelType::INTELLIGENT),
-//        );
-//        $contentToGenerate->update([
-//            'content' => $generatedContent,
-//        ]);
-
     }
 
     public function generatePostToSocialMedia(SocialPost $socialPost, SocialType $socialType, string $language): string
@@ -290,10 +283,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
     {
         set_time_limit(900);
         $postLanguage = $article->language == 'pl' ? 'polskim' : 'angielskim';
-        $systemPrompt = 'Stwórz treść posta na Facebooka.
-                        Na początku przedstaw temat w taki sposób aby troche wytłumaczyć temat ale i żeby zachęcić do późniejszego przeczytania artykułu
-                        ### Nie możesz się witać z czytelnikiem
-                        ### Pisz w pierwszej formie
+        $systemPrompt = '
                         ### Dodaj emotikony aby urozmaicić wpis
                         ### Napisz w języku: '. $postLanguage .'
                         ###

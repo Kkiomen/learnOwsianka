@@ -57,7 +57,7 @@
                                 <td>{{ $social->title }}</td>
                                 <td>{{ $social->date_post }}</td>
                                 <td>
-                                    <a href="{{ route('socialPost.view', ['id' => $social->id]) }}">
+                                    <a href="{{ route('socialPost.view.article', ['id' => $social->id]) }}">
                                         <x-bladewind.button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                             View
                                         </x-bladewind.button>

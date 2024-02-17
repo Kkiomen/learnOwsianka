@@ -65,6 +65,21 @@ class SocialPostController extends Controller
         ]);
     }
 
+    public function viewPosts(Request $request, $id)
+    {
+        $socialPost = SocialPost::where('id', $id)->first();
+        if (!$socialPost) {
+            return Redirect::back();
+        }
+
+        $posts = Post::where('social_post_id', $id)->orderBy('language', 'desc')->get();
+
+        return view('dashboard.socialPost.view_posts', [
+            'socialPost' => $socialPost,
+            'posts' => $posts
+        ]);
+    }
+
     public function createArticle(Request $request, int $id, string $language)
     {
         $socialPost = SocialPost::where('id', $id)->first();

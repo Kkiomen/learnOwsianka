@@ -13,6 +13,7 @@ class GeneratorChatGptCollection
     {
         $suffixApi = 'generate/chat-gpt/collection/';
 
+
         if($data instanceof ChatGptCollectionRequestDto) {
             $preparedData = [$this->prepareDataToGenerate($data)];
         }else{
@@ -20,7 +21,7 @@ class GeneratorChatGptCollection
                 $preparedData[$key] = $this->prepareDataToGenerate($value);
             }
         }
-
+dd(json_encode($preparedData));
         $response = Http::post(static::API_URL . $suffixApi, $preparedData);
 
         return json_decode($response->getBody()->getContents(), true);
@@ -45,7 +46,7 @@ class GeneratorChatGptCollection
         $result['type'] = $data->getType();
 
         $resultCollection = [];
-        foreach ($data->getCollection() as $collection) {
+        foreach ($data->getCollection() as $key => $collection) {
             $resultCollection[] = [
                 'id_external' => $collection->getIdExternal(),
                 'prompt' => $collection->getPrompt(),
@@ -53,7 +54,8 @@ class GeneratorChatGptCollection
                 'sort' => $collection->getSort(),
                 'webhook' => $collection->getWebhook(),
                 'webhook_type' => $collection->getWebhookType(),
-                'add_last_messages' => $collection->getAddLastMessage() ?? false
+                'add_last_messages' => $collection->getAddLastMessage() ?? false,
+                'lp_generate' => $key
             ];
         }
 
