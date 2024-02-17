@@ -307,7 +307,7 @@ class SocialPostController extends Controller
             $actualGeneratedData = [];
 
             foreach ($generatedData['collections'] as $collection) {
-                if (key_exists($collection['id_external'], $actualGeneratedData) || $collection['status_generate'] !== 1) {
+                if (key_exists($collection['id_external'], $actualGeneratedData) || $collection['status_generate'] !== 3) {
                     continue;
                 }
 
