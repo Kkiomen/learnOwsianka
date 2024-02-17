@@ -21,7 +21,7 @@ class GeneratorChatGptCollection
                 $preparedData[$key] = $this->prepareDataToGenerate($value);
             }
         }
-dd(json_encode($preparedData));
+
         $response = Http::post(static::API_URL . $suffixApi, $preparedData);
 
         return json_decode($response->getBody()->getContents(), true);

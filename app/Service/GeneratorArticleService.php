@@ -349,7 +349,7 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
                 $collectionParams = new ChatGptCollectionDto();
                 $collectionParams->setIdExternal($content->id);
                 $collectionParams->setSort($content->sequence);
-                $collectionParams->setPrompt($content->content);
+                $collectionParams->setPrompt('Artykuł o tytule: "' . $blog->title . '", Opisz:' .$content->content);
                 $collectionParams->setWebhook(self::WEBHOOK . $content->id);
                 $collectionParams->setWebhookType('ARTICLE_CONTENT');
                 $collectionParams->setSystem(self::GENERATE_ARTICLE_ONLY_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language);
