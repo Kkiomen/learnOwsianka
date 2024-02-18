@@ -91,7 +91,10 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 
 ### Odpowiedź podaj w JSON i tylko JSON';
 
-    const GENERATE_ARTICLE_DESIGN = 'Popraw aby treść była ciekawa i wciągająca do czytania, pogrób za pomocą <strong>, ważne informacje, oddziel za pomocą paragrafów <p>, podkreśl za pomocą <u>. Za pomocą znaczników html możesz nadać treści odpowiedni wygląd.';
+    const GENERATE_ARTICLE_DESIGN = 'Popraw aby treść była ciekawa i wciągająca do czytania,
+W związku z tym pogrób za pomocą <strong>, najważniejsze informacje informacje, oddziel różne fragmenty pomocą paragrafów <p>, podkreśl warte informacje za pomocą <u>. Za pomocą znaczników html możesz nadać treści odpowiedni wygląd.
+Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
+';
 
 
     public function __construct(
