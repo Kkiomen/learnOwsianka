@@ -17,11 +17,12 @@ class CallbackController extends Controller
             return response()->json(['status' => 1, 'error' => 'Invalid request'], 400);
         }
 
-        if($body['type'] === 'ARTICLE_CONTENT') {
+        if($body['type'] === 'ARTICLE') {
             $data = $body['data'];
             $content = $data['content'];
             $blogContent = BlogContent::where('id', $entityId)->first();
             $blogContent->content = $content;
+            $blogContent->status_generated = 2;
             $blogContent->save();
 
             return response()->json(['status' => 0, 'message' => 'Success']);

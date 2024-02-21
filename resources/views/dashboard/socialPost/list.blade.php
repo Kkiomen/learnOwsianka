@@ -50,12 +50,42 @@
                         <x-slot name="header">
                             <th>Tytuł</th>
                             <th>Data publikacji</th>
+                            <th>Aktywne</th>
                             <th>Opcje</th>
                         </x-slot>
                         @foreach($socialPosts as $social)
+
+                            @php
+                                $activated = 1;
+
+                                foreach ($social->blogs as $blog) {
+                                    if ($blog->activated == 0) {
+                                        $activated = 0;
+                                    }
+                                }
+
+                                if(empty($social->blogs->count())) {
+                                    $activated = 2;
+                                }
+                            @endphp
+
                             <tr>
                                 <td>{{ $social->title }}</td>
                                 <td>{{ $social->date_post }}</td>
+                                <td class="text-center">
+                                    @if($activated == 1)
+                                        <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                                    @endif
+
+                                    @if($activated == 2)
+                                        <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                    @endif
+
+                                    @if($activated == 0)
+                                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    @endif
+
+                                </td>
                                 <td>
                                     <a href="{{ route('socialPost.view.article', ['id' => $social->id]) }}">
                                         <x-bladewind.button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">

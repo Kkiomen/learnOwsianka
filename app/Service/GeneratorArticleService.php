@@ -179,6 +179,7 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
                 'image_url' => null,
                 'type' => BlogContentType::TEXT->value,
                 'sequence' => $i,
+                'status_generated' => 1
             ]);
 
             $collectionParams = new ChatGptCollectionDto();
@@ -235,6 +236,8 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
         $collectionParams->setWebhookType('ARTICLE_CONTENT');
         $collectionParams->setAddLastMessage(true);
         $collectionParams->setSystem(self::GENERATE_ARTICLE_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language);
+        $blogContent->status_generated = 1;
+        $blogContent->save();
 
         $collection[] = $collectionParams;
 
@@ -247,6 +250,8 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
     {
         set_time_limit(900);
         $contentToGenerate = BlogContent::where('id', $contentId)->first();
+        $contentToGenerate->status_generated = 1;
+        $contentToGenerate->save();
 
         $collectionParams = new ChatGptCollectionDto();
         $collectionParams->setIdExternal($contentToGenerate->id);
@@ -301,6 +306,18 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
 
     public function generateTitle(): string
     {
+        $lastTitle = '';
+
+        $titles = SocialPost::select('title')->orderBy('created_at', 'desc')->limit(12)->get()->toArray();
+        $titles = array_column($titles, 'title');
+        foreach ($titles as $title){
+            $lastTitle .= '- "' . $title . '",';
+        }
+
+        if(!empty($lastTitle)){
+            $lastTitle = "# Nie pisz o tych tematach (ostatnie 20 artykułów)" . $lastTitle;
+        }
+
         $systemPrompt = 'You are Title Generator GPT, a professional content marketer who helps writers, bloggers, and content creators with crafting captivating titles for their articles.
                         Wygeneruj tytuł artykułu dla bloga skierowanym do programistów.
 
@@ -310,7 +327,7 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
                         Jak masz coś opisywać z programowania to w języku PHP
 
                         Docelowi odbiorcy: Programiści PHP
-
+                        ' . $lastTitle . '
 
                         ### Odpowiedź podaj w JSON i tylko JSON
                         {
@@ -348,11 +365,23 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
 
             $language = ($blog->language == 'pl') ? 'polskim' : 'angielskim';
 
+            $lp = 0;
             foreach ($blog->contents as $content){
+                $addedPrompt = '';
+
+                if($lp == 0){
+                    $addedPrompt = '### Pisząc traktuj tą treść jako wstęp do artykułu. ';
+                }else if($lp === $blog->contents->count() - 1){
+                    $addedPrompt = '### Pisząc traktuj tą treść jako zakończenie artykułu. ';
+                }else{
+                    $addedPrompt = '### Pisząc traktuj tą treść jako kontynuację artykułu. Nie pisz podsumowania. Ma być płynne zakończenie. Postaraj się wyczerpać temat';
+                }
+
+
                 $collectionParams = new ChatGptCollectionDto();
                 $collectionParams->setIdExternal($content->id);
                 $collectionParams->setSort($content->sequence);
-                $collectionParams->setPrompt('Artykuł o tytule: "' . $blog->title . '", Opisz:' .$content->content);
+                $collectionParams->setPrompt('Artykuł o tytule (pisze dla kontekstu): "' . $blog->title . '", O czym masz pisać: ' .$content->content . ' ' . $addedPrompt);
                 $collectionParams->setWebhook(self::WEBHOOK . $content->id);
                 $collectionParams->setWebhookType('ARTICLE_CONTENT');
                 $collectionParams->setSystem(self::GENERATE_ARTICLE_ONLY_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language);
@@ -363,13 +392,14 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
                 $collectionParams = new ChatGptCollectionDto();
                 $collectionParams->setIdExternal($content->id);
                 $collectionParams->setSort($content->sequence);
-                $collectionParams->setSystem(self::GENERATE_ARTICLE_DESIGN);
+                $collectionParams->setSystem(self::GENERATE_ARTICLE_DESIGN . ' ### Pamiętaj aby treść była w języku: '. $language);
                 $collectionParams->setWebhook(self::WEBHOOK . $content->id);
                 $collectionParams->setWebhookType('ARTICLE_CONTENT');
                 $collectionParams->setPrompt('[LAST_MESSAGE_WITH_SAME_ID_EXTERNAL]');
                 $collectionParams->setAddLastMessage(false);
 
                 $collection[] = $collectionParams;
+                $lp++;
             }
 
             $params->setCollection($collection);

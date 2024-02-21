@@ -337,7 +337,8 @@ class SocialPostController extends Controller
                 if($content->generatedData != $generatedContent['updated_at']){
                     $content->update([
                         'generatedData' => $generatedContent['updated_at'],
-                        'content' => $generatedContent['generated_content']
+                        'content' => $generatedContent['generated_content'],
+                        'status_generated' => 2
                     ]);
                 }
             }

@@ -214,6 +214,20 @@
                                                 </div>
                                             </div>
                                             <div class="mt-5 flex lg:ml-4 lg:mt-0">
+                                                <span class="mx-auto my-auto">
+                                                    @if($content->status_generated == 2)
+                                                        <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                                                    @endif
+
+                                                    @if($content->status_generated == 1)
+                                                        <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
+                                                    @endif
+
+                                                    @if($content->status_generated == 0)
+                                                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                                    @endif
+
+                                                </span>
                                                 {{--                                                <span class="hidden sm:block">--}}
                                                 {{--                                                  <button type="button"--}}
                                                 {{--                                                          class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">--}}
