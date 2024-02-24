@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/social-post/list', [\App\Http\Controllers\SocialPostController::class, 'list'])->name('socialPost.list');
     Route::get('/dashboard/social-post/list-edit/{id}', [\App\Http\Controllers\SocialPostController::class, 'listEdit'])->name('socialPost.listEdit');
     Route::get('/dashboard/social-post/generate/title', [\App\Http\Controllers\SocialPostController::class, 'generateTitle'])->name('socialPost.generateTitle');
+    Route::get('/dashboard/social-post/generate/update-sitemap', [\App\Http\Controllers\SocialPostController::class, 'updateSitemap'])->name('socialPost.updateSitemap');
     Route::get('/dashboard/social-post/remove/{id}', [\App\Http\Controllers\SocialPostController::class, 'remove'])->name('socialPost.remove');
     Route::get('/dashboard/social-post/remove/blog/{id}', [\App\Http\Controllers\SocialPostController::class, 'deleteBlog'])->name('socialPost.deleteBlog');
     Route::get('/dashboard/social-post/view/{id}/article', [\App\Http\Controllers\SocialPostController::class, 'view'])->name('socialPost.view.article');

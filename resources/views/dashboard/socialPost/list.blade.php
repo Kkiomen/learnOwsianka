@@ -8,7 +8,10 @@
     <div class="pb-4 mt-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <a href="{{ route('socialPost.generateTitle') }}">
-                <div class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Generuj tytuł</div>
+                <div class="rounded-md bg-indigo-600 px-3.5 mt -2 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Generuj tytuł</div>
+            </a>
+            <a href="{{ route('socialPost.updateSitemap') }}">
+                <div class="rounded-md bg-indigo-600 px-3.5 mt-2 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update Sitemap</div>
             </a>
         </div>
     </div>

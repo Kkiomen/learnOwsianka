@@ -13,6 +13,7 @@ use App\Models\Post;
 use App\Models\SocialPost;
 use App\Service\GeneratorArticleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Redirect;
 
 class SocialPostController extends Controller
@@ -69,6 +70,12 @@ class SocialPostController extends Controller
     {
         SocialPost::where('id', $id)->delete();
 
+        return Redirect::back();
+    }
+
+    public function updateSitemap()
+    {
+        Artisan::call('sitemap:generate');
         return Redirect::back();
     }
 
