@@ -234,10 +234,10 @@ class SocialPostController extends Controller
 
         if ($request->hasFile('file-upload')) {
             $file = $request->file('file-upload');
-            $fileName = $file->getClientOriginalName();
+            $fileName = str_replace([' ', ';', '"', '(', ')'], '_', strtolower($request->get('image_alt')));
 
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('image-uploads', $fileName, 'public');
+            $filename = $fileName . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('image-uploads', $filename, 'public');
 
             $contentToUpdate->update([
                 'image_url' => $filename,
