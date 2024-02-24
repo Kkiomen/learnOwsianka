@@ -66,17 +66,10 @@
                                 </button>
                             </a>
                         </div>
-                        <div class="mx-1">
-                            <a href="{{ route('socialPost.updateDataApi', ['id' => $socialPost->id]) }}">
-                                <button type="button"
-                                        class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-                                    Update Data
-                                </button>
-                            </a>
-                        </div>
 
                         <div class="mx-1">
-                            <a href="{{ route('socialPost.content-blog.generate', ['id' => $socialPost->id]) }}"  onclick="return confirm('Czy chcesz to na pewno zrobić?')">
+                            <a href="{{ route('socialPost.content-blog.generate', ['id' => $socialPost->id]) }}"
+                               onclick="return confirm('Czy chcesz to na pewno zrobić?')">
                                 <button type="button"
                                         class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
                                     Generate All content
@@ -103,89 +96,153 @@
                             <input type="hidden" name="id" value="{{ $blog->id }}">
 
                             <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Title</label>
+                                <label for="about"
+                                       class="block text-sm font-medium leading-6 text-gray-900">Title</label>
                                 <div class="mt-2">
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title" placeholder="Title" value="{{ $blog->title }}"  />
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="title" type="text" name="title" placeholder="Title"
+                                        value="{{ $blog->title }}"/>
                                 </div>
                             </div>
 
                             <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
+                                <label for="about"
+                                       class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
                                 <div class="mt-2">
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tags" type="text" name="tags" placeholder="architecture, backend, php" value="{{ $blog->tags }}"  />
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="tags" type="text" name="tags" placeholder="architecture, backend, php"
+                                        value="{{ $blog->tags }}"/>
                                 </div>
                             </div>
 
                             <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Slug</label>
+                                <label for="about"
+                                       class="block text-sm font-medium leading-6 text-gray-900">Slug</label>
                                 <div class="mt-2">
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="slug" id="slug" value="{{ $blog->slug }}"  />
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="text" name="slug" id="slug" value="{{ $blog->slug }}"/>
                                 </div>
                             </div>
 
                             <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Language</label>
+                                <label for="about"
+                                       class="block text-sm font-medium leading-6 text-gray-900">Language</label>
                                 <div class="mt-2">
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="language" id="language" value="{{ $blog->language }}"  />
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="text" name="language" id="language" value="{{ $blog->language }}"/>
                                 </div>
                             </div>
 
                             <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Image url</label>
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Image
+                                    url</label>
                                 <div class="mt-2">
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="image_url" id="image_url" value="{{ $blog->image_url }}"  />
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="text" name="image_url" id="image_url" value="{{ $blog->image_url }}"/>
                                 </div>
                             </div>
 
                             <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Short description</label>
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Short
+                                    description</label>
                                 <div class="mt-2">
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="short_description" id="short_description" value="{{ $blog->short_description }}"  />
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="text" name="short_description" id="short_description"
+                                        value="{{ $blog->short_description }}"/>
                                 </div>
                             </div>
 
-                           <div class="flex mt-4">
-                               <x-bladewind.checkbox
-                                   label="Activated"
-                                   checked="{{ $blog->activated == 0 ? 'false' : 'true' }}"/>
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Short
+                                    description</label>
+                                <div class="mt-2">
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="text" name="short_description" id="title_meta"
+                                        value="{{ $blog->title_meta }}"/>
+                                </div>
+                            </div>
+
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Short
+                                    description</label>
+                                <div class="mt-2">
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="text" name="short_description" id="description_meta"
+                                        value="{{ $blog->description_meta }}"/>
+                                </div>
+                            </div>
+
+                            <div class="flex mt-4">
+                                <x-bladewind.checkbox
+                                    label="Activated"
+                                    checked="{{ $blog->activated == 0 ? 'false' : 'true' }}"/>
 
 
-                               <div class="flex justify-between gap-5">
-                                   <button type="submit"
-                                           class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                       <i class="fa-regular fa-floppy-disk mr-2"></i>
-                                       Save
-                                   </button>
+                                <div class="flex justify-between gap-5">
+                                    <button type="submit"
+                                            class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                        <i class="fa-regular fa-floppy-disk mr-2"></i>
+                                        Save
+                                    </button>
 
-                                   @if($blog->language == 'pl')
-                                    <a href="{{ route('blogPost', ['slug' => $blog->slug]) }}" target="_blank">
-                                   @else
-                                            <a href="https://oatllo.com/article/{{ $blog->slug }}" target="_blank">
-                                   @endif
-                                       <button type="button"
-                                               class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                                           <i class="fa-solid fa-eye mr-2"></i>
-                                           View
-                                       </button>
-                                   </a>
-                                   <a href="{{ route('socialPost.deleteBlog', ['id' => $blog->id]) }}" onclick="return confirm('Are you sure you want to delete this item?');">
-                                       <button type="button"
-                                               class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                           <i class="fa-regular fa-trash-can mr-2"></i>
-                                           Delete
-                                       </button>
-                                   </a>
+                                    @if($blog->language == 'pl')
+                                        <a href="{{ route('blogPost', ['slug' => $blog->slug]) }}" target="_blank">
+                                            @else
+                                                <a href="https://oatllo.com/article/{{ $blog->slug }}" target="_blank">
+                                                    @endif
+                                                    <button type="button"
+                                                            class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                                                        <i class="fa-solid fa-eye mr-2"></i>
+                                                        View
+                                                    </button>
+                                                </a>
+                                                <a href="{{ route('socialPost.deleteBlog', ['id' => $blog->id]) }}"
+                                                   onclick="return confirm('Are you sure you want to delete this item?');">
+                                                    <button type="button"
+                                                            class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                                        <i class="fa-regular fa-trash-can mr-2"></i>
+                                                        Delete
+                                                    </button>
+                                                </a>
 
 
-                                    <a href="{{ route('socialPost.content-blog.generate.prototype', ['id' => $blog->id]) }}"  onclick="return confirm('Czy chcesz to na pewno zrobić?')">
-                                        <button type="button"
-                                                class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-                                            Generate prototype
-                                        </button>
-                                    </a>
+                                                <a href="{{ route('socialPost.content-blog.generate.prototype', ['id' => $blog->id]) }}"
+                                                   onclick="return confirm('Czy chcesz to na pewno zrobić?')">
+                                                    <button type="button"
+                                                            class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                                        Generate prototype
+                                                    </button>
+                                                </a>
 
-                               </div>
-                           </div>
+                                                <a href="{{ route('socialPost.updateDataApi', ['id' => $socialPost->id, 'blog' => $blog->id]) }}"
+                                                   onclick="return confirm('Czy chcesz to na pewno zrobić?')">
+                                                    <button type="button"
+                                                            class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                                        Update Data
+                                                    </button>
+                                                </a>
+
+
+                                            @if($blog->language == 'en')
+                                                    <a href="{{ route('socialPost.content-blog.generate.english', ['blog' => $blog->id]) }}"
+                                                       onclick="return confirm('Czy chcesz to na pewno zrobić?')">
+                                                        <button type="button"
+                                                                class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                                           Translate to english
+                                                        </button>
+                                                    </a>
+                                            @endif
+
+                                </div>
+                            </div>
                         </form>
                         <div class="border border-1 border-gray-500 rounded p-5 my-4">
                             <h3 class="text-sm leading-7 text-gray-900 sm:truncate sm:text-sm sm:tracking-tight">
@@ -433,7 +490,9 @@
                     <h2 class="text-lg font-medium text-gray-900 mb-5">
                         Blog post - image - PL
                     </h2>
-                    <form method="POST" action="{{ route('saveImageForSocialPost.generate', ['socialPost' => $socialPost->id, 'language' => 'pl']) }}" enctype="multipart/form-data">
+                    <form method="POST"
+                          action="{{ route('saveImageForSocialPost.generate', ['socialPost' => $socialPost->id, 'language' => 'pl']) }}"
+                          enctype="multipart/form-data">
                         @csrf
                         <label for="file-upload"
                                class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
@@ -460,7 +519,9 @@
                     <h2 class="text-lg font-medium text-gray-900 mb-5">
                         Blog post - image - EN
                     </h2>
-                    <form method="POST" action="{{ route('saveImageForSocialPost.generate', ['socialPost' => $socialPost->id, 'language' => 'en']) }}" enctype="multipart/form-data">
+                    <form method="POST"
+                          action="{{ route('saveImageForSocialPost.generate', ['socialPost' => $socialPost->id, 'language' => 'en']) }}"
+                          enctype="multipart/form-data">
                         @csrf
                         <label for="file-upload"
                                class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">

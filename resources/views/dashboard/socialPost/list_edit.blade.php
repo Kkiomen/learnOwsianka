@@ -17,23 +17,25 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="w-full">
-                    <form method="POST" action="{{ route('socialPost.add') }}">
-                    @csrf
+                    <form method="POST" action="{{ route('socialPost.edit', ['socialPost' => $socialPost->id]) }}">
+                        @csrf
                         <div class="col-span-full">
                             <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Title</label>
                             <div class="mt-2">
-                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title" placeholder="Title"  />
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                       id="title" type="text" name="title" placeholder="Title" value="{{ $socialPost->title }}" />
                             </div>
                         </div>
                         <div class="col-span-full">
                             <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Publication date</label>
                             <div class="mt-2">
-                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date" type="text" name="date" placeholder="2024-01-11"/>
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                       id="date" type="text" name="date" placeholder="2024-01-11" value="{{ $socialPost->date_post }}" />
                             </div>
                         </div>
 
                         <div class="mt-4 text-right">
-                            <button class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" name="save-user" type="submit">Add</button>
+                            <button class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" name="save-user" type="submit">Edit</button>
                         </div>
                     </form>
                 </div>

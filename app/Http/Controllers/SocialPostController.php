@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Api\MyVpsApplication\Dto\ChatGptCollectionDto;
 use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestDto;
 use App\Api\MyVpsApplication\Dto\ChatGptCollectionRequestModelDto;
 use App\Api\MyVpsApplication\GeneratorChatGptCollection;
+use App\Enum\BlogContentType;
 use App\Models\Blog;
 use App\Models\BlogContent;
 use App\Models\Post;
@@ -32,10 +34,30 @@ class SocialPostController extends Controller
         ]);
     }
 
+    public function listEdit(SocialPost $id)
+    {
+        $socialPosts = SocialPost::orderBy('date_post', 'desc')->paginate(15);
+
+        return view('dashboard.socialPost.list_edit', [
+            'socialPosts' => $socialPosts,
+            'socialPost' => $id
+        ]);
+    }
+
 
     public function add(Request $request)
     {
         SocialPost::create([
+            'title' => $request->get('title'),
+            'date_post' => $request->get('date'),
+        ]);
+
+        return Redirect::back();
+    }
+
+    public function edit(Request $request, SocialPost $socialPost)
+    {
+        $socialPost->update([
             'title' => $request->get('title'),
             'date_post' => $request->get('date'),
         ]);
@@ -122,7 +144,7 @@ class SocialPostController extends Controller
 
         $currentContent = null;
 
-        if($contentId === 0){
+        if ($contentId === 0) {
             BlogContent::create([
                 'blog_id' => $blog->id,
                 'header' => null,
@@ -298,51 +320,86 @@ class SocialPostController extends Controller
         return Redirect::back();
     }
 
-    public function updateData(Request $request, int $id)
+    public function updateData(Request $request, int $id, Blog $blog)
     {
-        $socialPost = SocialPost::where('id', $id)->first();
-        foreach ($socialPost->blogs as $blog) {
-            $generatedData = $this->generatorChatGptCollection->getGeneratedContentByIdExternal($blog->id);
+        $generatedData = $this->generatorChatGptCollection->getGeneratedContentByIdExternal($blog->id);
 
-            $actualGeneratedData = [];
+        $actualGeneratedData = [];
 
-            foreach ($generatedData['collections'] as $collection) {
-                if (key_exists($collection['id_external'], $actualGeneratedData) || $collection['status_generate'] !== 3) {
-                    continue;
-                }
-
-                $actualGeneratedData[$collection['id_external']] = [
-                    'id' => $collection['id'],
-                    'created_at' => $collection['created_at'],
-                    'updated_at' => $collection['updated_at'],
-                    'prompt' => $collection['prompt'],
-                    'system' => $collection['system'],
-                    'sort' => $collection['sort'],
-                    'generated_content' => $collection['generated_content']
-                ];
-
-            }
-
-            if (empty($actualGeneratedData)) {
+        foreach ($generatedData['collections'] as $collection) {
+            if (key_exists($collection['id_external'], $actualGeneratedData) || $collection['status_generate'] !== 3) {
                 continue;
             }
 
-            foreach ($blog->contents as $content) {
-                if(!key_exists($content->id, $actualGeneratedData)){
-                    continue;
-                }
+            $actualGeneratedData[$collection['id_external']] = [
+                'id' => $collection['id'],
+                'created_at' => $collection['created_at'],
+                'updated_at' => $collection['updated_at'],
+                'prompt' => $collection['prompt'],
+                'system' => $collection['system'],
+                'sort' => $collection['sort'],
+                'generated_content' => $collection['generated_content']
+            ];
 
-                $generatedContent = $actualGeneratedData[$content->id];
+        }
 
-                if($content->generatedData != $generatedContent['updated_at']){
-                    $content->update([
-                        'generatedData' => $generatedContent['updated_at'],
-                        'content' => $generatedContent['generated_content'],
-                        'status_generated' => 2
-                    ]);
-                }
+        foreach ($blog->contents as $content) {
+            if (!key_exists($content->id, $actualGeneratedData)) {
+                continue;
+            }
+
+            $generatedContent = $actualGeneratedData[$content->id];
+
+            if ($content->generatedData != $generatedContent['updated_at']) {
+                $content->update([
+                    'generatedData' => $generatedContent['updated_at'],
+                    'content' => $generatedContent['generated_content'],
+                    'status_generated' => 3
+                ]);
             }
         }
+
+
+        return Redirect::back();
+    }
+
+    public function generateEnglishPost(Request $request, Blog $blog)
+    {
+        $blogPolish = Blog::where('social_post_id', $blog->social_post_id)->where('language', 'pl')->first();
+
+        $params = new ChatGptCollectionRequestDto();
+        $params->setIdExternal($blog->id);
+        $params->setTemperature('1');
+        $params->setType('ARTICLE');
+        $params->setModel(ChatGptCollectionRequestModelDto::GPT_4);
+        $collection = [];
+        $WEBHOOK = 'https://oatllo.pl/api/callback/generate/data/';
+
+        foreach ($blogPolish->contents as $content) {
+            $blogContent = BlogContent::create([
+                'blog_id' => $blog->id,
+                'header' => null,
+                'content' => $content->content,
+                'image_url' => null,
+                'type' => BlogContentType::TEXT->value,
+                'sequence' => $content->sequence,
+                'status_generated' => 1
+            ]);
+
+
+            $collectionParams = new ChatGptCollectionDto();
+            $collectionParams->setIdExternal($blogContent->id);
+            $collectionParams->setSort($content->sequence);
+            $collectionParams->setPrompt($content->content);
+            $collectionParams->setWebhook($WEBHOOK . $blogContent->id);
+            $collectionParams->setWebhookType('ARTICLE_CONTENT');
+            $collectionParams->setSystem('Przetłumacz treść na język angielski. Nie usuwaj formatowania HTML. Zależy mi aby przetłumaczyć tylko treść na język angielski');
+
+            $collection[] = $collectionParams;
+        }
+
+        $params->setCollection($collection);
+        $this->generatorChatGptCollection->generateContentByCollection($params);
 
         return Redirect::back();
     }

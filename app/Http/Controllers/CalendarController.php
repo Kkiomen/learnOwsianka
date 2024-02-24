@@ -32,7 +32,9 @@ class CalendarController extends Controller
             'image_url' => $request->get('image_url'),
             'language' => $request->get('language'),
             'tags' => $request->get('tags'),
-            'activated' => $request->exists('checkbox') ? true : false
+            'activated' => $request->exists('checkbox') ? true : false,
+            'title_meta' => $request->get('title_meta'),
+            'description_meta' => $request->get('description_meta'),
         ]);
         /**
          * "title" => "aaaa"

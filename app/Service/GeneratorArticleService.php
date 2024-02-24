@@ -33,6 +33,8 @@ Podsumowanie tylko wtedy, kiedy poprosi Cię oto użytkownik
 <pre><code class="language-php"> ... </code></pre>
 
 ###
+Nagłówki powinny być dostosowane pod SEO. Wykorzystaj jak najwięcej słów kluczowych w nagłówkach. Nagłówki muszą być zgodne z treścią artykułu. Oprócz oczywistych fraz, powinien zawierać frazy powiązane.
+###
 Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozycji na liście (za pomocą linków skokowych).
 
 ### NIE UŻYWAJ MARKDOWN W ARTYKULE, jedyni możesz użyć znaczników html
@@ -84,9 +86,11 @@ Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozy
 ###
 {
 "tags": (tagi dla artykułu bloga oddzielona przecinkiem, podaj ich 10),
-"short_description": (Krótki opis na 20 znaków opisujący o czym będzie post, zachęcający do przeczytania),
+"short_description": (opis zachęcający  do przeczytania - umieszczany pod tytułem artykułu - ma się składać z max 20 słów, min 16),
 "slug": (slug do url artykułu, aby był zgodny z seo),
-"title": (tytuł artykułu, który będzie widoczny na blogu)
+"title": (tytuł artykułu, który będzie widoczny na blogu),
+"title_meta": (tytuł artykułu wyświetlany na pasku przeglądarki. Ma być zgodny z SEO),
+"description_meta": (opis artykułu wyświetlany w wyszukiwarce. Ma być zgodny z SEO. Ma mieć 150-160 znaków)
 }
 
 ### Odpowiedź podaj w JSON i tylko JSON';
@@ -125,6 +129,8 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
         $content = null;
         $tags = strtolower($generatedContent['tags']);
         $title = $generatedContent['title'];
+        $titleMeta = $generatedContent['title_meta'];
+        $descriptionMeta = $generatedContent['description_meta'];
         $image_url = null;
         $slug = $generatedContent['slug'];
 
@@ -137,7 +143,9 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
             'tags' => $tags,
             'image_url' => $image_url,
             'slug' => $slug,
-            'activated' => false
+            'activated' => false,
+            'title_meta' => $titleMeta,
+            'description_meta' => $descriptionMeta,
         ]);
 
         if($withContent){
@@ -368,8 +376,10 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
             $lp = 0;
             foreach ($blog->contents as $content){
                 $addedPrompt = '';
+                $system = $this->getSystemPromptToGenerateArticle(false);
 
                 if($lp == 0){
+                    $system = $this->getSystemPromptToGenerateArticle(true);
                     $addedPrompt = '### Pisząc traktuj tą treść jako wstęp do artykułu. ';
                 }else if($lp === $blog->contents->count() - 1){
                     $addedPrompt = '### Pisząc traktuj tą treść jako zakończenie artykułu. ';
@@ -384,7 +394,7 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
                 $collectionParams->setPrompt('Artykuł o tytule (pisze dla kontekstu): "' . $blog->title . '", O czym masz pisać: ' .$content->content . ' ' . $addedPrompt);
                 $collectionParams->setWebhook(self::WEBHOOK . $content->id);
                 $collectionParams->setWebhookType('ARTICLE_CONTENT');
-                $collectionParams->setSystem(self::GENERATE_ARTICLE_ONLY_CONTENT_PROMPT. ' ### Artykuł napisz w języku: '. $language);
+                $collectionParams->setSystem($system . ' ### Artykuł napisz w języku: '. $language);
 
                 $collection[] = $collectionParams;
 
@@ -399,6 +409,8 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
                 $collectionParams->setAddLastMessage(false);
 
                 $collection[] = $collectionParams;
+                $content->status_generated = 1;
+                $content->save();
                 $lp++;
             }
 
@@ -445,5 +457,30 @@ Za pomocą znaczników html zrób wszystko aby tekst był ciekawy do czytania
                 ]);
             }
         }
+    }
+
+    public function getSystemPromptToGenerateArticle(bool $withTableOfContents): string
+    {
+        $tableContent = '';
+
+        if($withTableOfContents){
+            $tableContent = '### Dołącz spis treści na początku wpisu, po wstępie, linkując do każdej pozycji na liście (za pomocą linków skokowych).';
+        }
+
+        return 'Na podstawie konspektu, który poda użytkownik przygotuj treść artykułu na bloga.
+                        Ma być on zgodny z SEO oraz zawierać jak najwięcej słów kluczowych.
+                        ###
+                        Treść będzie dalej kontynuowana w kolejnych wiadomościach. Dlatego nie kończ jej na jednej. Zwykle będzie kontynuowana 3-4 razy
+
+                        ### Nie pisz podsumowania. Zakończ treść tak żeby możnaby było ją kontynuować w kolejnej. Nie pisz o tym użytkownikowi.
+                        Podsumowanie tylko wtedy, kiedy poprosi Cię oto użytkownik
+
+                        ### Nie używaj markdown. W momencie przedstawiania kodu, umieść go między znacznikami:
+                        <pre><code class="language-php"> ... </code></pre>
+                        '. $tableContent .'
+
+                        ### NIE UŻYWAJ MARKDOWN W ARTYKULE, jedyni możesz użyć znaczników html
+
+                        ### Rozbudowywuj każdą treść. Jeśli podajesz nagłówek to treść musi mieć minimum 10 zdań.';
     }
 }

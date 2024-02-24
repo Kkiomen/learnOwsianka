@@ -1,6 +1,7 @@
 @extends('layouts.layout_blog_post', [
     'title' => $post->title,
     'short_description' => $post->short_description,
+    'post' => $post
 ])
 
 @section('content-box')

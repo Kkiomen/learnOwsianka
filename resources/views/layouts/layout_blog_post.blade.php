@@ -1,12 +1,19 @@
 <!doctype html>
 <html class="no-js" lang="{{ env('LANGUAGE') }}">
 <head>
-    <title>JakubOwsianka.pl - Blog - {{ $title }}</title>
+    <title>{{ $post->title_meta ?? $title }}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="Jakub Owsianka">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
-    <meta name="description" content="{{ $short_description }}">
+    <meta name="description" content="{{ $post->description_meta ?? $short_description }}">
+    <meta property=”og:title” content=”{{ $title }}” />
+    <meta property=”og:description” content="{{ $short_description }}" />
+    <meta property="og:type" content="website" />
+    @if($post->image_url !== null)
+        <meta property=”og:image” content=”{{ \App\Helper\ImageHelper::getImage($post->image_url) }}” />
+    @endif
+
     <!-- favicon icon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon-57x57.png') }}">
@@ -65,7 +72,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10">
                     <div class="row">
-                        <div class="col-12 sm-margin-50px-top last-paragraph-no-margin wow animate__fadeIn">
+                        <div class="col-12 sm-margin-50px-top last-paragraph-no-margin wow animate__fadeIn article-content-box">
                             @yield('content-box')
                         </div>
                     </div>

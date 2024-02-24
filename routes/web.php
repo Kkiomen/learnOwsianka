@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/dashboard/social-post/list', [\App\Http\Controllers\SocialPostController::class, 'list'])->name('socialPost.list');
+    Route::get('/dashboard/social-post/list-edit/{id}', [\App\Http\Controllers\SocialPostController::class, 'listEdit'])->name('socialPost.listEdit');
     Route::get('/dashboard/social-post/generate/title', [\App\Http\Controllers\SocialPostController::class, 'generateTitle'])->name('socialPost.generateTitle');
     Route::get('/dashboard/social-post/remove/{id}', [\App\Http\Controllers\SocialPostController::class, 'remove'])->name('socialPost.remove');
     Route::get('/dashboard/social-post/remove/blog/{id}', [\App\Http\Controllers\SocialPostController::class, 'deleteBlog'])->name('socialPost.deleteBlog');
@@ -41,15 +42,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/social-post/view/{id}/posts', [\App\Http\Controllers\SocialPostController::class, 'viewPosts'])->name('socialPost.view.posts');
     Route::get('/dashboard/social-post/view/{id}/blog/generate', [\App\Http\Controllers\SocialPostController::class, 'generateAllContent'])->name('socialPost.content-blog.generate');
     Route::get('/dashboard/social-post/view/{id}/blog/generate-prototype', [\App\Http\Controllers\SocialPostController::class, 'generateContentPrototype'])->name('socialPost.content-blog.generate.prototype');
+    Route::get('/dashboard/social-post/viewGenerate/blog/generate-english_post/{blog}', [\App\Http\Controllers\SocialPostController::class, 'generateEnglishPost'])->name('socialPost.content-blog.generate.english');
     Route::get('/dashboard/social-post/view/{id}/create/article/{language}', [\App\Http\Controllers\SocialPostController::class, 'createArticle'])->name('socialPost.createArticle');
     Route::get('/dashboard/social-post/view/{id}/generate/article/{language}', [\App\Http\Controllers\SocialPostController::class, 'generateArticle'])->name('socialPost.generateArticle');
-    Route::get('/dashboard/social-post/view/blog-content/{id}/generate/update-data', [\App\Http\Controllers\SocialPostController::class, 'updateData'])->name('socialPost.updateDataApi');
+    Route::get('/dashboard/social-post/view/blog-content/{id}/generate/update-data/{blog}', [\App\Http\Controllers\SocialPostController::class, 'updateData'])->name('socialPost.updateDataApi');
     Route::get('/dashboard/social-post/view/generate/blog/{blogId}/article/add/{type}/{contentId}', [\App\Http\Controllers\SocialPostController::class, 'generateArticleAddContent'])->name('socialPost.generateArticleAddContent');
     Route::get('/dashboard/social-post/view/remove/blog-content/{contentId}', [\App\Http\Controllers\SocialPostController::class, 'removeBlogContent'])->name('socialPost.removeBlogContent');
     Route::post('/dashboard/social-post/view/update/blog-content/{contentId}', [\App\Http\Controllers\SocialPostController::class, 'updateBlogContent'])->name('socialPost.updateBlogContent');
     Route::get('/dashboard/social-post/view/update/blog-content/{contentId}/design', [\App\Http\Controllers\SocialPostController::class, 'updateDesignBlogContent'])->name('socialPost.updateDesignBlogContent');
     Route::get('/dashboard/social-post/view/update/blog-content/{contentId}/generate', [\App\Http\Controllers\SocialPostController::class, 'generateBlogContent'])->name('socialPost.generateBlogContent');
     Route::post('/dashboard/social-post/add', [\App\Http\Controllers\SocialPostController::class, 'add'])->name('socialPost.add');
+    Route::post('/dashboard/social-post/edit/{socialPost}', [\App\Http\Controllers\SocialPostController::class, 'edit'])->name('socialPost.edit');
 
     Route::get('/dashboard/posts/generate/{socialPostId}', [\App\Http\Controllers\PostController::class, 'generateForSocialPost'])->name('generateForSocialPost.generate');
     Route::get('/dashboard/posts/generate/post/{postId}', [\App\Http\Controllers\PostController::class, 'regenerateForSocialPost'])->name('regenerateForSocialPost.generate');

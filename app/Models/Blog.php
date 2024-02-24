@@ -19,7 +19,10 @@ class Blog extends Model
         'tags',
         'image_url',
         'slug',
-        'activated'
+        'activated',
+        'to_publish',
+        'title_meta',
+        'description_meta',
     ];
 
     public function contents(): HasMany
