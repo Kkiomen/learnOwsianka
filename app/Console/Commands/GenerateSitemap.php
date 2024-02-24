@@ -32,7 +32,7 @@ class GenerateSitemap extends Command
         $this->info('Rozpoczynam generowanie sitemapy');
         $postSitemap = Sitemap::create();
         $postSitemap->add(
-            Url::create("")
+            Url::create("/")
                 ->setPriority(1)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
         );
