@@ -159,23 +159,21 @@
                             </div>
 
                             <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Short
-                                    description</label>
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Tytuł (nagłówek przeglądarki)</label>
                                 <div class="mt-2">
                                     <input
                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text" name="short_description" id="title_meta"
+                                        type="text" name="title_meta" id="title_meta"
                                         value="{{ $blog->title_meta }}"/>
                                 </div>
                             </div>
 
                             <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Short
-                                    description</label>
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Opis (meta description)</label>
                                 <div class="mt-2">
                                     <input
                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text" name="short_description" id="description_meta"
+                                        type="text" name="description_meta" id="description_meta"
                                         value="{{ $blog->description_meta }}"/>
                                 </div>
                             </div>

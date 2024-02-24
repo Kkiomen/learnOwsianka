@@ -36,8 +36,8 @@
                 </div>
 
                 @if($post->image_url !== null)
-                    <div class="col-12 col-lg-6 px-0 order-1 align-self-end md-margin-60px-bottom">
-                        <img class="overlap-image border-radius-8px md-no-margin-bottom" src="{{ \App\Helper\ImageHelper::getImage($post->image_url) }}" alt="{{ $post->title }}" />
+                    <div class="col-12 col-lg-6 px-0 order-1 d-flex justify-content-center align-items-center mb-2">
+                        <img class="border-radius-8px md-no-margin-bottom justify-between items-center" src="{{ \App\Helper\ImageHelper::getImage($post->image_url) }}" alt="{{ $post->title }}" />
                     </div>
                 @endif
                 <div class="col-12 col-lg-6 padding-9-rem-left overflow-hidden alt-font font-weight-600 text-white text-overlap-style-01 d-none d-md-block">Blog</div>
