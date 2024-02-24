@@ -31,6 +31,18 @@ class GenerateSitemap extends Command
     {
         $this->info('Rozpoczynam generowanie sitemapy');
         $postSitemap = Sitemap::create();
+        $postSitemap->add(
+            Url::create("")
+                ->setPriority(1)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+        );
+
+        $postSitemap->add(
+            Url::create("/blog")
+                ->setPriority(1)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+        );
+
         Blog::where('activated', true)->where('language', env('LANGUAGE'))->get()->each(function (Blog $blog) use ($postSitemap) {
             $postSitemap->add(
               Url::create("/article/{$blog->slug}")
