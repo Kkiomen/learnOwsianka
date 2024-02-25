@@ -2,12 +2,13 @@
 <html class="no-js" lang="pl">
 <head>
     @include('analytics.head_front')
-    <title>Oatllo</title>
+    <title>{{ __('basic.meta_title') }}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="ThemeZaa">
+    <link rel="canonical" href="{{ asset('') }}" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
-    <meta name="description" content="Litho is a clean and modern design, BootStrap 5 responsive, business and portfolio multipurpose HTML5 template with 37+ ready homepage demos.">
+    <meta name="description" content="{{ __('basic.meta_description') }}">
     <!-- favicon icon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon-57x57.png') }}">

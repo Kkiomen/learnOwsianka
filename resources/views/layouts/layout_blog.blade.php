@@ -2,12 +2,17 @@
 <html class="no-js" lang="{{ env('LANGUAGE') }}">
 <head>
     @include('analytics.head_front')
-    <title>Oatllo - Blog</title>
+    <title>{{ __('basic.meta_title_blog') }}</title>
+    <meta name="description" content="{{ __('basic.meta_description_blog') }}">
     <meta charset="utf-8">
+    @if(!empty($tag))
+        <link rel="canonical" href="{{ asset('blog/tag/'. $tag) }}" />
+    @else
+        <link rel="canonical" href="{{ asset('blog') }}" />
+    @endif
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="Jakub Owsianka">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
-    <meta name="description" content="Litho is a clean and modern design, BootStrap 5 responsive, business and portfolio multipurpose HTML5 template with 37+ ready homepage demos.">
     <!-- favicon icon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon-57x57.png') }}">

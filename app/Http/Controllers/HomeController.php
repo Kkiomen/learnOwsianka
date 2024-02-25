@@ -19,6 +19,7 @@ class HomeController extends Controller
         $posts = Blog::orderBy('created_at','desc')->where('language', env('LANGUAGE'))->where('activated', true)->paginate(15);
         return view('pages.blog', [
             'posts' => $posts,
+            'tag' => null
         ]);
     }
 
@@ -28,6 +29,7 @@ class HomeController extends Controller
         $posts = Blog::where('tags', 'LIKE', '%'. strtolower($tag) .'%')->orderBy('created_at','desc')->where('language', env('LANGUAGE'))->where('activated', true)->paginate(15);
         return view('pages.blog', [
             'posts' => $posts,
+            'tag' => $tag,
         ]);
     }
 
