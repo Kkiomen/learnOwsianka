@@ -19,3 +19,6 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+
+Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS

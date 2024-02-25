@@ -1,6 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="{{ env('LANGUAGE') }}">
 <head>
+    @include('analytics.head_front')
     <title>{{ $post->title_meta ?? $title }}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -29,6 +30,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/code.css') }}" />
+    @include('analytics.head_end')
 </head>
 <body data-mobile-nav-style="classic">
 <!-- start header -->
