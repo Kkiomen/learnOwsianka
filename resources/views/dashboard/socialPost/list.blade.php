@@ -53,17 +53,22 @@
                         <x-slot name="header">
                             <th>Tytuł</th>
                             <th>Data publikacji</th>
+                            <th>Typ</th>
                             <th>Aktywne</th>
                             <th>Opcje</th>
                         </x-slot>
                         @foreach($socialPosts as $social)
 
                             @php
+                                $isCourse = false;
                                 $activated = 1;
 
                                 foreach ($social->blogs as $blog) {
                                     if ($blog->activated == 0) {
                                         $activated = 0;
+                                    }
+                                    if($blog->type == 'course'){
+                                        $isCourse = true;
                                     }
                                 }
 
@@ -75,6 +80,7 @@
                             <tr>
                                 <td>{{ $social->title }}</td>
                                 <td>{{ $social->date_post }}</td>
+                                <td>{{ $isCourse ? 'Course' : 'Article' }}</td>
                                 <td class="text-center">
                                     @if($activated == 1)
                                         <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>

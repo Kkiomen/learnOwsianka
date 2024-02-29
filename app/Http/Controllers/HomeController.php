@@ -16,7 +16,7 @@ class HomeController extends Controller
 
     public function blog()
     {
-        $posts = Blog::orderBy('created_at','desc')->where('language', env('LANGUAGE'))->where('activated', true)->paginate(15);
+        $posts = Blog::orderBy('created_at','desc')->where('language', env('LANGUAGE'))->where('type', 'article')->where('activated', true)->paginate(15);
         return view('pages.blog', [
             'posts' => $posts,
             'tag' => null
@@ -26,7 +26,7 @@ class HomeController extends Controller
 
     public function blogListTag($tag)
     {
-        $posts = Blog::where('tags', 'LIKE', '%'. strtolower($tag) .'%')->orderBy('created_at','desc')->where('language', env('LANGUAGE'))->where('activated', true)->paginate(15);
+        $posts = Blog::where('tags', 'LIKE', '%'. strtolower($tag) .'%')->orderBy('created_at','desc')->where('language', env('LANGUAGE'))->where('type', 'article')->where('activated', true)->paginate(15);
         return view('pages.blog', [
             'posts' => $posts,
             'tag' => $tag,
@@ -35,7 +35,6 @@ class HomeController extends Controller
 
     public function blogPost($slug)
     {
-//        $post = Blog::where('slug', $slug)->where('language', env('LANGUAGE'))->where('activated', true)->first();
         $post = Blog::where('slug', $slug)->first();
 
         if(!$post){

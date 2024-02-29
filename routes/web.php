@@ -60,6 +60,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/posts/generate/image/post/{socialPost}/{language}', [\App\Http\Controllers\PostController::class, 'saveImageForSocialPost'])->name('saveImageForSocialPost.generate');
     Route::get('/dashboard/posts/generate/image/send/{socialPost}', [\App\Http\Controllers\PostController::class, 'sendSocialPost'])->name('sendSocialPost.socialMedia');
 
+    Route::get('/dashboard/courses/list', [\App\Http\Controllers\CourseController::class, 'list'])->name('course.list');
+    Route::post('/dashboard/courses/add', [\App\Http\Controllers\CourseController::class, 'add'])->name('course.add');
+    Route::get('/dashboard/courses/view/{course}', [\App\Http\Controllers\CourseController::class, 'view'])->name('course.view');
+    Route::post('/dashboard/courses/edit/{course}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('course.edit');
+    Route::post('/dashboard/courses/category/{course}/add', [\App\Http\Controllers\CourseController::class, 'categoryAdd'])->name('course.category.add');
+    Route::post('/dashboard/courses/category/{course}/edit/{category}', [\App\Http\Controllers\CourseController::class, 'categoryEdit'])->name('course.category.edit');
+    Route::get('/dashboard/courses/category/{course}/add-blog/{category}', [\App\Http\Controllers\CourseController::class, 'categoryAddBlog'])->name('course.category.add-blog');
+    Route::post('/dashboard/courses/category/{course}/add-blog/{category}/blog/{blog}', [\App\Http\Controllers\CourseController::class, 'categoryAddBlogPost'])->name('course.category.add.blog.new');
+    Route::post('/dashboard/courses/category/{course}/add-blog/{category}/update/{categoryLessons}', [\App\Http\Controllers\CourseController::class, 'categoryUpdateBlogPost'])->name('course.category.update');
+
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

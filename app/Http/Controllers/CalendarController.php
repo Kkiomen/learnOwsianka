@@ -35,6 +35,7 @@ class CalendarController extends Controller
             'activated' => $request->exists('checkbox') ? true : false,
             'title_meta' => $request->get('title_meta'),
             'description_meta' => $request->get('description_meta'),
+            'type' => $request->get('type'),
         ]);
         /**
          * "title" => "aaaa"
