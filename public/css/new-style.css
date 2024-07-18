@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+:root {
+    --text-color: #8d8d8d;
+}
+
+.bg-oatllo{
+    background-color: #1a1b1f;
+}
+.bg-oatllo-article{
+    background-color: #262626;
+}
+
+.text-oatllo-article{
+    color: var(--text-color);
+}
+
+.article-oattlo{
+    text-decoration-color: var(--text-color);
+}
+
+.article-oattlo p{
+    margin-bottom: 1.75rem;
+}
+
+.article-oattlo img{
+    margin-bottom: 1.75rem;
+}
+
+.article-oattlo h2,h3,h4{
+    line-height: 1.75rem;
+    margin-top: 5rem;
+    margin-bottom: 1rem;
+}
+
+.article-oattlo h3{
+    font-size: 1.15rem;
+}
+
+.article-oattlo h4{
+    font-size: 1.1rem;
+}
+
+.article-oattlo-header{
+    border-bottom: 1px solid var(--text-color);
+    padding-bottom: 1rem;
+    margin-bottom: 4rem;
+    margin-top: 2rem;
+    color: var(--text-color);
+}
+
+.article-oattlo-header h1{
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.see-other-oattlo{
+    border: 1px solid #A4B0F5;
+}
+
+.see-other-oattlo li{
+    margin-top: 10px;
+}
+
+.see-other-oattlo li a{
+    text-decoration: underline;
+}
+
+.logo{
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    font-size: 2rem;
+}
+
+.blog-oatllo a:hover{
+    color: white;
+}
+
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em
+}
+
+.hljs {
+    color: #eff;
+    background: #333333;
+    margin-bottom: 1.75rem;
+    text-decoration: none; !important;
+    white-space: pre-wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: normal; !important;
+}
+
+
+.hljs:first-line {
+    all: unset;
+}
+
+
+
+pre u{
+    text-decoration: none; !important;
+}
+
+.hljs ::selection, .hljs::selection {
+    background-color: #314549;
+    color: #eff
+}
+
+.hljs-comment {
+    color: #546e7a;
+    font-weight: normal;
+}
+
+.hljs-tag {
+    color: #b2ccd6;
+    font-weight: normal;
+}
+
+.hljs-operator, .hljs-punctuation, .hljs-subst {
+    color: #eff;
+    font-weight: normal;
+}
+
+
+.hljs{
+    text-decoration: none; !important;
+}
+
+.hljs-operator {
+    opacity: .7
+}
+
+.hljs-bullet, .hljs-deletion, .hljs-name, .hljs-selector-tag, .hljs-template-variable, .hljs-variable {
+    color: #d5a8f5;
+    font-weight: normal;
+}
+
+.hljs-attr, .hljs-link, .hljs-literal, .hljs-number, .hljs-symbol, .hljs-variable.constant_ {
+    color: #f78c6c;
+    font-weight: normal;
+}
+
+.hljs-class .hljs-title, .hljs-title, .hljs-title.class_ {
+    color: #ffcb6b;
+    border: none;
+    font-weight: normal;
+}
+
+.hljs-strong {
+    font-weight: normal;
+    color: #ffcb6b
+}
+
+.hljs-addition, .hljs-code, .hljs-string, .hljs-title.class_.inherited__ {
+    color: #c3e88d;
+    font-weight: normal;
+}
+
+.hljs-built_in, .hljs-doctag, .hljs-keyword.hljs-atrule, .hljs-quote, .hljs-regexp {
+    color: #89ddff;
+    font-weight: normal;
+}
+
+.hljs-attribute, .hljs-function .hljs-title, .hljs-section, .hljs-title.function_, .ruby .hljs-property {
+    color: #82aaff;
+    font-weight: normal;
+}
+
+.diff .hljs-meta, .hljs-keyword, .hljs-template-tag, .hljs-type {
+    color: #e5af8f;
+    font-weight: normal;
+}
+
+.hljs-emphasis {
+    color: #000000;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.hljs-meta, .hljs-meta .hljs-keyword, .hljs-meta .hljs-string {
+    color: #ff5370;
+    font-weight: normal;
+}
+
+.hljs-meta .hljs-keyword, .hljs-meta-keyword {
+    font-weight: normal;
+}
+
+@media only screen and (max-width: 767px) {
+    .hljs {
+        font-size: 0.6rem;
+    }
+
+    .article-oattlo h1{
+        font-size: 2rem;
+    }
+}
+

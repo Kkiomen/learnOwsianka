@@ -15,4 +15,9 @@ class CourseCategoryLesson extends Model
     {
         return Blog::where('id', $this->blog_id)->first();
     }
+
+    public function courseCategory()
+    {
+        return CourseCategory::where('id', $this->course_category_id)->first();
+    }
 }

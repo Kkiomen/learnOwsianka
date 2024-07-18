@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class CourseCategory extends Model
 {
     use HasFactory;
-    protected $fillable = ['course_id', 'name', 'language', 'sort'];
+    protected $fillable = ['course_id', 'name', 'language', 'sort', 'slug'];
 
     public function blogs()
     {
@@ -20,5 +20,10 @@ class CourseCategory extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function getCourse(): Course
+    {
+        return Course::where('id', $this->course_id)->first();
     }
 }

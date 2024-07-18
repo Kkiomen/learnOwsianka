@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="Jakub Owsianka">
-    <link rel="canonical" href="{{ asset('/article/' . $post->slug) }}" />
+    <link rel="canonical" href="{{ $url }}" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
     <meta name="description" content="{{ $post->description_meta ?? $short_description }}">
     <meta property=”og:title” content=”{{ $title }}” />

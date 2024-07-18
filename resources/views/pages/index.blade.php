@@ -51,12 +51,22 @@
          data-paddingleft="[0,0,0,0]"
          style="z-index: 10; font-weight: 300">{{ __('basic.index_submain') }}</div>
 
+    @php $courses = \App\Models\Course::where('activated', 1)->where('language', env('LANGUAGE'))->get(); @endphp
     <!-- LAYER NR. 5 (Search Input) -->
     <a href="{{ route('blog') }}" class="text-black">
         <div class="bg-white rounded px-4 py-3" style="color: #494949; font-size: 1rem">
             Blog
         </div>
     </a>
+
+    @foreach($courses as $course)
+        <a href="{{ route('course', ['courseSlag' => $course->slug]) }}" class="text-black">
+            <div class="bg-white rounded px-4 py-3" style="color: #494949; font-size: 1rem; margin-top: 1rem">
+                {{ $course->name }}
+            </div>
+        </a>
+    @endforeach
+
 {{--    <form action="email-templates/subscribe-newsletter.php" method="post">--}}
 {{--        <div class="tp-caption tp-resizeme alt-font newsletter-style-02 mx-auto mx-lg-0"--}}
 {{--             data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"--}}

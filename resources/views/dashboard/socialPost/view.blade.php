@@ -95,7 +95,7 @@
                             @csrf
                             <input type="hidden" name="id" value="{{ $blog->id }}">
 
-                            <div class="col-span-full">
+                            <div class="col-span-full mt-3">
                                 <label for="about"
                                        class="block text-sm font-medium leading-6 text-gray-900">Title</label>
                                 <div class="mt-2">
@@ -106,7 +106,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-full">
+                            <div class="col-span-full mt-3">
                                 <label for="about"
                                        class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
                                 <div class="mt-2">
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-full">
+                            <div class="col-span-full mt-3">
                                 <label for="about"
                                        class="block text-sm font-medium leading-6 text-gray-900">Slug</label>
                                 <div class="mt-2">
@@ -127,7 +127,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-full">
+                            <div class="col-span-full mt-3">
                                 <label for="about"
                                        class="block text-sm font-medium leading-6 text-gray-900">Language</label>
                                 <div class="mt-2">
@@ -137,7 +137,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-full">
+                            <div class="col-span-full mt-3">
                                 <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Image
                                     url</label>
                                 <div class="mt-2">
@@ -147,7 +147,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-full">
+                            <div class="col-span-full mt-3">
                                 <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Short
                                     description</label>
                                 <div class="mt-2">
@@ -158,7 +158,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-full">
+                            <div class="col-span-full mt-3">
                                 <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Tytuł (nagłówek przeglądarki)</label>
                                 <div class="mt-2">
                                     <input
@@ -168,7 +168,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-full">
+                            <div class="col-span-full mt-3">
                                 <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Opis (meta description)</label>
                                 <div class="mt-2">
                                     <input
@@ -178,8 +178,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-full">
-                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Opis (meta description)</label>
+                            <div class="col-span-full mt-3">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Typ</label>
                                 <div class="mt-2">
                                     <select id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option>Choose type</option>
@@ -202,11 +202,35 @@
                                         Save
                                     </button>
 
-                                    @if($blog->language == 'pl')
-                                        <a href="{{ route('blogPost', ['slug' => $blog->slug]) }}" target="_blank">
+
+                                        @if($blog->type == 'course')
+                                            @if($blog->language == 'pl')
+                                                @php
+                                                    $courseCategory = $blog?->courseCategory();
+                                                    $course = $courseCategory?->getCourse();
+
+                                                    if(!$courseCategory || !$course) {
+                                                        $urlCourse = '#';
+                                                    }else{
+                                                        $urlCourse = route('coursePost', [
+                                                            'courseSlag' => $course->slug,
+                                                            'categorySlug' => $courseCategory->slug,
+                                                            'lessonSlug' => $blog->slug
+                                                        ]);
+                                                    }
+                                                @endphp
+
+                                                <a href="{{ $urlCourse }}" target="_blank">
+                                            @else
+                                                <a href="https://oatllo.com/course/lesson/{{ $blog->slug }}" target="_blank">
+                                            @endif
+                                        @else
+                                            @if($blog->language == 'pl')
+                                                <a href="{{ route('blogPost', ['slug' => $blog->slug]) }}" target="_blank">
                                             @else
                                                 <a href="https://oatllo.com/article/{{ $blog->slug }}" target="_blank">
-                                                    @endif
+                                            @endif
+                                        @endif
                                                     <button type="button"
                                                             class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                                                         <i class="fa-solid fa-eye mr-2"></i>

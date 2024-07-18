@@ -103,6 +103,13 @@
                             </div>
                         </div>
 
+                        <div class="col-span-full">
+                            <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Slug</label>
+                            <div class="mt-2">
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="slug" type="text" name="slug" placeholder="slug"  value="{{ $course->slug }}" />
+                            </div>
+                        </div>
+
                         <div class="col-span-full mt-2">
                             <label for="about"
                                    class="block text-sm font-medium leading-6 text-gray-900">Description</label>
@@ -240,6 +247,13 @@
                                     <input
                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="title" type="text" name="name" placeholder="Name" value="{{ $category->name }}"/>
+                                </div>
+                            </div>
+
+                            <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Slug</label>
+                                <div class="mt-2">
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="slug" type="text" name="slug" placeholder="slug" value="{{ $category->slug }}" />
                                 </div>
                             </div>
 

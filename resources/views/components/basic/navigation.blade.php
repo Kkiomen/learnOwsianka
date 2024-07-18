@@ -1,7 +1,15 @@
+@php $courses = \App\Models\Course::where('activated', 1)->where('language', env('LANGUAGE'))->get(); @endphp
 <ul class="navbar-nav alt-font">
     <li class="nav-item dropdown megamenu">
         <a href="{{ route('index') }}" class="nav-link">Home</a>
     </li>
+
+    @foreach($courses as $course)
+        <li class="nav-item dropdown megamenu">
+            <a href="{{ route('course', ['courseSlag' => $course->slug]) }}" class="nav-link">{{ $course->name }}</a>
+        </li>
+    @endforeach
+
     <li class="nav-item dropdown megamenu">
         <a href="{{ route('blog') }}" class="nav-link">Blog</a>
     </li>

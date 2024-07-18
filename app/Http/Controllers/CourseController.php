@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseCategoryLesson;
+use App\Service\CourseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -25,6 +26,7 @@ class CourseController extends Controller
         Course::create([
             'name' => $request->get('name'),
             'language' => $request->get('language'),
+            'slug' => $request->get('slug'),
             'description' => '',
             'image' => '',
         ]);
@@ -66,7 +68,10 @@ class CourseController extends Controller
             'description' => $request->get('description'),
             'sort' => $request->get('sort'),
             'activated' => $request->get('activated'),
+            'slug' => $request->get('slug'),
         ]);
+
+        CourseService::updateTree($course->id);
 
         return Redirect::back();
     }
@@ -78,7 +83,10 @@ class CourseController extends Controller
             'name' => $request->get('name'),
             'language' => $request->get('language'),
             'sort' => $request->get('sort'),
+            'slug' => $request->get('slug'),
         ]);
+
+        CourseService::updateTree($course->id);
 
         return Redirect::back();
     }
@@ -89,7 +97,10 @@ class CourseController extends Controller
             'name' => $request->get('name'),
             'language' => $request->get('language'),
             'sort' => $request->get('sort'),
+            'slug' => $request->get('slug'),
         ]);
+
+        CourseService::updateTree($course->id);
 
         return Redirect::back();
     }
@@ -114,6 +125,8 @@ class CourseController extends Controller
             'blog_id' => $blog->id,
         ]);
 
+        CourseService::updateTree($course->id);
+
         return Redirect::route('course.view', ['course' => $course->id]);
     }
 
@@ -122,6 +135,8 @@ class CourseController extends Controller
         $categoryLessons->update([
             'sort' => $request->get('sort'),
         ]);
+
+        CourseService::updateTree($course->id);
 
         return Redirect::route('course.view', ['course' => $course->id]);
     }

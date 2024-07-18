@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/counter', \App\Livewire\Counter::class)->name('architectureNavigation');
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/article/{slug}', [\App\Http\Controllers\HomeController::class, 'blogPost'])->name('blogPost');
+Route::get('/course/{courseSlag}', [\App\Http\Controllers\HomeController::class, 'course'])->name('course');
+Route::get('/course/{courseSlag}/{categorySlug}/{lessonSlug}', [\App\Http\Controllers\HomeController::class, 'coursePost'])->name('coursePost');
 Route::get('/blog', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 Route::get('/blog/tag/{tag}', [\App\Http\Controllers\HomeController::class, 'blogListTag'])->name('blogListTag');
 Route::get('/test', [\App\Http\Controllers\TestController::class, 'test'])->name('test');

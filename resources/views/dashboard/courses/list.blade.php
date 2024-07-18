@@ -28,10 +28,16 @@
                                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" name="name" placeholder="Name"  />
                             </div>
                         </div>
-                        <div class="col-span-full">
+                        <div class="col-span-full mt-3">
                             <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Language</label>
                             <div class="mt-2">
                                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language" type="text" name="language" placeholder="Language"  value="pl" />
+                            </div>
+                        </div>
+                        <div class="col-span-full mt-3">
+                            <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Slug</label>
+                            <div class="mt-2">
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language" type="text" name="slug" placeholder="slug" />
                             </div>
                         </div>
 
