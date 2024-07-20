@@ -75,34 +75,6 @@
                 </div>
             </article>
         @endforeach
-        @foreach($posts as $post)
-            <article
-                class="flex max-w-xl flex-col items-start justify-between bg-oatllo-article text-oatllo-article mx-2 px-4 py-2 rounded-xl blog-oatllo my-5">
-                <div class="group relative">
-                    <h3 class="mt-3 text-lg font-semibold leading-6 text-oatllo-article group-hover:text-white">
-                        <a href="{{ route('blogPost', ['slug' => $post->slug]) }}">
-                            <span class="absolute inset-0"></span>
-                            {{ $post->title }}
-                        </a>
-                    </h3>
-                    <p class="mt-5 line-clamp-3 text-sm leading-6 text-oatllo-article">{{ $post->short_description }}</p>
-                </div>
-            </article>
-        @endforeach
-        @foreach($posts as $post)
-            <article
-                class="flex max-w-xl flex-col items-start justify-between bg-oatllo-article text-oatllo-article mx-2 px-4 py-2 rounded-xl blog-oatllo my-5">
-                <div class="group relative">
-                    <h3 class="mt-3 text-lg font-semibold leading-6 text-oatllo-article group-hover:text-white">
-                        <a href="{{ route('blogPost', ['slug' => $post->slug]) }}">
-                            <span class="absolute inset-0"></span>
-                            {{ $post->title }}
-                        </a>
-                    </h3>
-                    <p class="mt-5 line-clamp-3 text-sm leading-6 text-oatllo-article">{{ $post->short_description }}</p>
-                </div>
-            </article>
-        @endforeach
     </div>
 
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
